@@ -7,6 +7,7 @@ package GUI.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+
 import javax.accessibility.AccessibleContext;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,19 +56,18 @@ public final class InputForm extends JPanel {
     public InputForm(String title, int w, int h) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
-//        this.setBorder(new EmptyBorder(0, 10, 5, 10));
+        // this.setBorder(new EmptyBorder(0, 10, 5, 10));
         this.setPreferredSize(new Dimension(w, h));
         lblTitle = new JLabel(title);
         txtForm = new JTextField();
         this.add(lblTitle);
         this.add(txtForm);
     }
-    
+
     public void setTitle(String title) {
         this.lblTitle.setText(title);
     }
 
-    
     public String getPass() {
         return txtPass.getText();
     }
@@ -147,6 +147,11 @@ public final class InputForm extends JPanel {
 
     public String getDocument() {
         return txtForm.getText();
+    }
+
+    public void setReadOnly(boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setReadOnly'");
     }
 
 }

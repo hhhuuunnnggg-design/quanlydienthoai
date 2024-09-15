@@ -4,9 +4,10 @@
  */
 package BUS;
 
+import java.util.ArrayList;
+
 import DAO.DungLuongRamDAO;
 import DTO.ThuocTinhSanPham.DungLuongRamDTO;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,7 +20,7 @@ public class DungLuongRamBUS {
     public DungLuongRamBUS getInstance() {
         return new DungLuongRamBUS();
     }
-    
+
     public DungLuongRamBUS() {
         listDLRam = dlramDAO.selectAll();
     }
@@ -36,7 +37,7 @@ public class DungLuongRamBUS {
         int i = 0;
         int vitri = -1;
         while (i < this.listDLRam.size() && vitri == -1) {
-            if (listDLRam.get(i).getMadlram()== maram) {
+            if (listDLRam.get(i).getMadlram() == maram) {
                 vitri = i;
             } else {
                 i++;
@@ -73,32 +74,34 @@ public class DungLuongRamBUS {
         int i = 0;
         int vitri = -1;
         while (i < this.listDLRam.size() && vitri == -1) {
-            if (listDLRam.get(i).getMadlram()== madlram) {
+            if (listDLRam.get(i).getMadlram() == madlram) {
                 vitri = i;
-            } else i++;
+            } else
+                i++;
         }
         return vitri;
     }
-    
+
     public boolean checkDup(int dl) {
         boolean check = true;
         int i = 0;
-        while(i <= this.listDLRam.size() && check == true) {
-            if(this.listDLRam.get(i).getDungluongram()==dl) {
+        while (i < this.listDLRam.size() && check == true) {
+            if (this.listDLRam.get(i).getDungluongram() == dl) {
                 check = false;
-            } else i++;
+            } else
+                i++;
         }
         return check;
     }
-    
+
     public int getKichThuocById(int madlram) {
         return this.listDLRam.get(this.getIndexById(madlram)).getDungluongram();
     }
-    
+
     public String[] getArrKichThuoc() {
         String[] result = new String[listDLRam.size()];
-        for(int i = 0; i < listDLRam.size(); i++) {
-            result[i] = Integer.toString(listDLRam.get(i).getDungluongram())+"GB";
+        for (int i = 0; i < listDLRam.size(); i++) {
+            result[i] = Integer.toString(listDLRam.get(i).getDungluongram()) + "GB";
         }
         return result;
     }

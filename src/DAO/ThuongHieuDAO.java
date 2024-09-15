@@ -4,8 +4,6 @@
  */
 package DAO;
 
-import DTO.ThuocTinhSanPham.ThuongHieuDTO;
-import config.JDBCUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +12,17 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
-    public static ThuongHieuDAO getInstance(){
+import DTO.ThuocTinhSanPham.ThuongHieuDTO;
+import config.JDBCUtil;
+
+public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO> {
+    public static ThuongHieuDAO getInstance() {
         return new ThuongHieuDAO();
     }
+
     @Override
     public int insert(ThuongHieuDTO t) {
-        int result = 0 ;
+        int result = 0;
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "INSERT INTO `thuonghieu`(`tenthuonghieu`) VALUES (?)";
@@ -36,7 +38,7 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
 
     @Override
     public int update(ThuongHieuDTO t) {
-        int result = 0 ;
+        int result = 0;
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `thuonghieu` SET`tenthuonghieu`=? WHERE `mathuonghieu`=?";
@@ -53,7 +55,7 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
 
     @Override
     public int delete(String t) {
-        int result = 0 ;
+        int result = 0;
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `thuonghieu` SET `trangthai` = 0 WHERE `mathuonghieu`= ?";
@@ -75,10 +77,10 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
             String sql = "SELECT * FROM thuonghieu WHERE `trangthai`=1";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             ResultSet rs = (ResultSet) pst.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int mathuonghieu = rs.getInt("mathuonghieu");
                 String tenthuonghieu = rs.getString("tenthuonghieu");
-                
+
                 ThuongHieuDTO lh = new ThuongHieuDTO(mathuonghieu, tenthuonghieu);
                 result.add(lh);
             }
@@ -97,7 +99,7 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, t);
             ResultSet rs = (ResultSet) pst.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int mathuonghieu = rs.getInt("mathuonghieu");
                 String tenloaihang = rs.getString("tenthuonghieu");
                 result = new ThuongHieuDTO(mathuonghieu, tenloaihang);
@@ -116,12 +118,12 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
             String sql = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'quanlikhohang' AND   TABLE_NAME   = 'thuonghieu'";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             ResultSet rs2 = pst.executeQuery(sql);
-            if (!rs2.isBeforeFirst() ) {
+            if (!rs2.isBeforeFirst()) {
                 System.out.println("No data");
             } else {
-                while ( rs2.next() ) {
+                while (rs2.next()) {
                     result = rs2.getInt("AUTO_INCREMENT");
-                    
+
                 }
             }
         } catch (SQLException ex) {
@@ -129,5 +131,5 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO>{
         }
         return result;
     }
-    
+
 }

@@ -1,12 +1,13 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+* Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+*/
 package BUS;
+
+import java.util.ArrayList;
 
 import DAO.ThuongHieuDAO;
 import DTO.ThuocTinhSanPham.ThuongHieuDTO;
-import java.util.ArrayList;
 
 /**
  *
@@ -71,7 +72,8 @@ public class ThuongHieuBUS {
         text = text.toLowerCase();
         ArrayList<ThuongHieuDTO> result = new ArrayList<>();
         for (ThuongHieuDTO i : this.listLH) {
-            if (Integer.toString(i.getMathuonghieu()).toLowerCase().contains(text) || i.getTenthuonghieu().toLowerCase().contains(text)) {
+            if (Integer.toString(i.getMathuonghieu()).toLowerCase().contains(text)
+                    || i.getTenthuonghieu().toLowerCase().contains(text)) {
                 result.add(i);
             }
         }
@@ -91,10 +93,11 @@ public class ThuongHieuBUS {
         return this.listLH.get(this.getIndexByMaLH(mathuonghieu)).getTenthuonghieu();
     }
 
+    // kiểm tra tên thương hiệu có bị trùng lặp hay không
     public boolean checkDup(String name) {
         boolean check = true;
         int i = 0;
-        while (i <= this.listLH.size() && check == true) {
+        while (i < this.listLH.size() && check == true) {
             if (this.listLH.get(i).getTenthuonghieu().toLowerCase().contains(name.toLowerCase())) {
                 check = false;
             } else {

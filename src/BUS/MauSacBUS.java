@@ -4,9 +4,10 @@
  */
 package BUS;
 
+import java.util.ArrayList;
+
 import DAO.MauSacDAO;
 import DTO.ThuocTinhSanPham.MauSacDTO;
-import java.util.ArrayList;
 
 /**
  *
@@ -83,7 +84,7 @@ public class MauSacBUS {
     public boolean checkDup(String name) {
         boolean check = true;
         int i = 0;
-        while (i <= this.listMauSac.size() && check == true) {
+        while (i < this.listMauSac.size() && check == true) {
             if (this.listMauSac.get(i).getTenmau().toLowerCase().contains(name.toLowerCase())) {
                 check = false;
             } else {

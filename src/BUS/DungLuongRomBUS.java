@@ -4,9 +4,10 @@
  */
 package BUS;
 
+import java.util.ArrayList;
+
 import DAO.DungLuongRomDAO;
 import DTO.ThuocTinhSanPham.DungLuongRomDTO;
-import java.util.ArrayList;
 
 /**
  *
@@ -98,8 +99,8 @@ public class DungLuongRomBUS {
     public boolean checkDup(int dl) {
         boolean check = true;
         int i = 0;
-        while (i <= this.listDLRom.size() && check == true) {
-            if (this.listDLRom.get(i).getDungluongrom()== dl) {
+        while (i < this.listDLRom.size() && check == true) {
+            if (this.listDLRom.get(i).getDungluongrom() == dl) {
                 check = false;
             } else {
                 i++;

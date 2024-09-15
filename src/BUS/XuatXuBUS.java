@@ -4,9 +4,10 @@
  */
 package BUS;
 
+import java.util.ArrayList;
+
 import DAO.XuatXuDAO;
 import DTO.ThuocTinhSanPham.XuatXuDTO;
-import java.util.ArrayList;
 
 /**
  *
@@ -56,8 +57,10 @@ public class XuatXuBUS {
         int i = 0;
         int vitri = -1;
         while (i < this.listXuatXu.size() && vitri == -1) {
-            if (listXuatXu.get(i).getMaxuatxu()== maxx) vitri = i;
-            else i++;
+            if (listXuatXu.get(i).getMaxuatxu() == maxx)
+                vitri = i;
+            else
+                i++;
         }
         return vitri;
     }
@@ -74,11 +77,11 @@ public class XuatXuBUS {
         }
         return check;
     }
-    
+
     public boolean checkDup(String name) {
         boolean check = true;
         int i = 0;
-        while (i <= this.listXuatXu.size() && check == true) {
+        while (i < this.listXuatXu.size() && check == true) {
             if (this.listXuatXu.get(i).getTenxuatxu().toLowerCase().contains(name.toLowerCase())) {
                 check = false;
             } else {
