@@ -24,13 +24,19 @@ public class KhuVucKhoDAO implements DAOinterface<KhuVucKhoDTO> {
     public int insert(KhuVucKhoDTO t) {
         int result = 0;
         try {
+            // tạo kết nối với cơ sở dữ liệu
             Connection con = (Connection) JDBCUtil.getConnection();
+            // sql
             String sql = "INSERT INTO `khuvuckho`(`makhuvuc`, `tenkhuvuc`,`ghichu`,`trangthai`) VALUES (?,?,?,1)";
+            // tạo prepareStatement để truyền giá trị sql vào
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            // chèn dữ liệu vào
             pst.setInt(1, t.getMakhuvuc());
             pst.setString(2, t.getTenkhuvuc());
             pst.setString(3, t.getGhichu());
+            // stament update
             result = pst.executeUpdate();
+            // ngắt kêt nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
             Logger.getLogger(KhuVucKhoDAO.class.getName()).log(Level.SEVERE, null, ex);

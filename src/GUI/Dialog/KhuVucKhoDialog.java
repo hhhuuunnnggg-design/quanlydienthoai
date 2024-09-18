@@ -76,7 +76,7 @@ public final class KhuVucKhoDialog extends JDialog implements ActionListener {
         btnCapNhat = new ButtonCustom("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustom("Huỷ bỏ", "danger", 14);
 
-        //Add MouseListener btn
+        // Add MouseListener btn
         btnThem.addActionListener(this);
         btnCapNhat.addActionListener(this);
         btnHuyBo.addActionListener(this);
@@ -103,13 +103,15 @@ public final class KhuVucKhoDialog extends JDialog implements ActionListener {
         ghichu.setText(kvk.getGhichu());
     }
 
-       boolean Validation(){
+    boolean Validation() {
         if (Validation.isEmpty(tenkhuvuc.getText())) {
-            JOptionPane.showMessageDialog(this, "Tên khu vực kho không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tên khu vực kho không được rỗng", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-          return true;
+        }
+        return true;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnThem && Validation()) {
@@ -117,7 +119,7 @@ public final class KhuVucKhoDialog extends JDialog implements ActionListener {
             String tenkhuvuc = this.tenkhuvuc.getText();
             String ghichu = this.ghichu.getText();
             jpkvk.kvkBUS.add(new KhuVucKhoDTO(makhuvuc, tenkhuvuc, ghichu));
-            jpkvk.loadDataTable(jpkvk.listKVK);
+            jpkvk.loadDataTable(jpkvk.listKVKDAO);
             dispose();
         } else if (e.getSource() == btnHuyBo) {
             dispose();
@@ -125,7 +127,7 @@ public final class KhuVucKhoDialog extends JDialog implements ActionListener {
             String tenkhuvuc = this.tenkhuvuc.getText();
             String ghichu = this.ghichu.getText();
             jpkvk.kvkBUS.update(new KhuVucKhoDTO(kvk.getMakhuvuc(), tenkhuvuc, ghichu));
-            jpkvk.loadDataTable(jpkvk.listKVK);
+            jpkvk.loadDataTable(jpkvk.listKVKDAO);
             dispose();
         }
     }

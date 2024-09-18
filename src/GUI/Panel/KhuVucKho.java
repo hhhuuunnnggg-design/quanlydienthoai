@@ -1,46 +1,62 @@
 package GUI.Panel;
 
-import BUS.KhuVucKhoBUS;
-import BUS.SanPhamBUS;
-import DAO.KhuVucKhoDAO;
-import DTO.KhuVucKhoDTO;
-import DTO.SanPhamDTO;
-import java.awt.*;
-import javax.swing.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import helper.JTableExporter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import GUI.Main;
-import GUI.Component.IntegratedSearch;
-import GUI.Component.MainFunction;
-import javax.swing.border.EmptyBorder;
-import GUI.Component.PanelBorderRadius;
-import GUI.Component.itemTaskbar;
-import GUI.Dialog.KhuVucKhoDialog;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+
+import BUS.KhuVucKhoBUS;
+import BUS.SanPhamBUS;
+import DAO.KhuVucKhoDAO;
+import DTO.KhuVucKhoDTO;
+import DTO.SanPhamDTO;
+import GUI.Main;
+import GUI.Component.IntegratedSearch;
+import GUI.Component.MainFunction;
+import GUI.Component.PanelBorderRadius;
+import GUI.Component.itemTaskbar;
+import GUI.Dialog.KhuVucKhoDialog;
+import helper.JTableExporter;
 
 public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
 
@@ -58,14 +74,14 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
     public KhuVucKhoBUS kvkBUS = new KhuVucKhoBUS();
     public SanPhamBUS spBUS = new SanPhamBUS();
 
-    public ArrayList<KhuVucKhoDTO> listKVK = kvkBUS.getAll();
+    public ArrayList<KhuVucKhoDTO> listKVKDAO = kvkBUS.getAll();
     public ArrayList<SanPhamDTO> listSP = spBUS.getAll();
 
     private void initComponent() {
         tableKhuvuc = new JTable();
         scrollTableSanPham = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã kho", "Tên khu vực", "Ghi chú"};
+        String[] header = new String[] { "Mã kho", "Tên khu vực", "Ghi chú" };
         tblModel.setColumnIdentifiers(header);
         tableKhuvuc.setModel(tblModel);
         scrollTableSanPham.setViewportView(tableKhuvuc);
@@ -84,7 +100,7 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
             public void mousePressed(MouseEvent e) {
                 int index = tableKhuvuc.getSelectedRow();
                 if (index != -1) {
-                    ArrayList<SanPhamDTO> listSP = spBUS.getByMakhuvuc(listKVK.get(index).getMakhuvuc());
+                    ArrayList<SanPhamDTO> listSP = spBUS.getByMakhuvuc(listKVKDAO.get(index).getMakhuvuc());
                     ListCustomersInDePot(listSP);
                 }
             }
@@ -95,35 +111,38 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.setOpaque(true);
 
-        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở giữa mà contentCenter không bị dính sát vào các thành phần khác
+        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở
+        // giữa mà contentCenter không bị dính sát vào các thành phần khác
         contentCenter = new JPanel();
         contentCenter.setPreferredSize(new Dimension(1100, 600));
         contentCenter.setBackground(BackgroundColor);
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm kiếm
+        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
+        // kiếm
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = {"create", "update", "delete", "import", "export"};
+        String[] action = { "create", "update", "delete", "import", "export" };
         mainFunction = new MainFunction(m.user.getManhomquyen(), "khuvuckho", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
         }
         functionBar.add(mainFunction);
 
-        search = new IntegratedSearch(new String[]{"Tất cả", "Mã khu vực kho", "Tên khu vực kho"});
+        search = new IntegratedSearch(new String[] { "Tất cả", "Mã khu vực kho", "Tên khu vực kho" });
         search.cbxChoose.addItemListener(this);
         search.txtSearchForm.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
+                // khá hay
                 String type = (String) search.cbxChoose.getSelectedItem();
                 String txt = search.txtSearchForm.getText();
-                listKVK = kvkBUS.search(txt, type);
-                loadDataTable(listKVK);
+                listKVKDAO = kvkBUS.search(txt, type);
+                loadDataTable(listKVKDAO);
             }
         });
 
@@ -134,7 +153,7 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
         main = new PanelBorderRadius();
         BoxLayout boxly = new BoxLayout(main, BoxLayout.Y_AXIS);
         main.setLayout(boxly);
-//        main.setBorder(new EmptyBorder(20, 20, 20, 20));
+        // main.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentCenter.add(main, BorderLayout.CENTER);
         main.add(scrollTableSanPham);
 
@@ -145,8 +164,12 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
         JLabel tit = new JLabel("Danh sách sản phẩm trong kho");
         tit.setFont(new java.awt.Font(FlatRobotoFont.FAMILY, 1, 16));
         right.add(tit);
-//        right.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách sản phẩm trong kho", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14)));
-        scrollPane = new JScrollPane(right, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        // right.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách
+        // sản phẩm trong kho", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+        // javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe
+        // UI", 1, 14)));
+        scrollPane = new JScrollPane(right, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         scrollPane.setBackground(BackgroundColor);
         contentCenter.add(scrollPane, BorderLayout.EAST);
@@ -156,14 +179,14 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
         this.m = m;
         initComponent();
         tableKhuvuc.setDefaultEditor(Object.class, null);
-        loadDataTable(listKVK);
+        loadDataTable(listKVKDAO);
     }
 
     public void loadDataTable(ArrayList<KhuVucKhoDTO> result) {
         tblModel.setRowCount(0);
         for (KhuVucKhoDTO kvk : result) {
-            tblModel.addRow(new Object[]{
-                kvk.getMakhuvuc(), kvk.getTenkhuvuc(), kvk.getGhichu()
+            tblModel.addRow(new Object[] {
+                    kvk.getMakhuvuc(), kvk.getTenkhuvuc(), kvk.getGhichu()
             });
         }
     }
@@ -192,7 +215,7 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
                     String ghichu = excelRow.getCell(1).getStringCellValue();
                     kvkBUS.add(new KhuVucKhoDTO(id, tenkvk, ghichu));
                     tblModel.setRowCount(0);
-                    loadDataTable(listKVK);
+                    loadDataTable(listKVKDAO);
                 }
                 JOptionPane.showMessageDialog(this, "Nhập thành công");
             } catch (FileNotFoundException ex) {
@@ -202,25 +225,26 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
             }
         }
 
-        loadDataTable(listKVK);
+        loadDataTable(listKVKDAO);
     }
 
-//    void Import() throws IOException, SQLException, Exception{
-//        File excelFile;
-//        FileInputStream excelFIS = null;
-//        BufferedInputStream excelBIS = null;
-//        XSSFWorkbook excelJTableImport = null;
-//        ArrayList<KhuVucKhoDTO> listExcel = new ArrayList<KhuVucKhoDTO>();
-//        JFileChooser jf = new JFileChooser();
-//        int result = jf.showOpenDialog(null);
-//        jf.setDialogTitle("Open file");
-//        Workbook workbook = null;
-//        if (result == JFileChooser.APPROVE_OPTION) {
-//            excelFile = jf.getSelectedFile();
-//            ArrayList<KhuVucKhoDTO> excel = ExcelImport.readDataFromExcel(excelFile, KhuVucKhoDTO.class);
-//            System.out.println(excel.size());
-//        }
-//    }
+    // void Import() throws IOException, SQLException, Exception{
+    // File excelFile;
+    // FileInputStream excelFIS = null;
+    // BufferedInputStream excelBIS = null;
+    // XSSFWorkbook excelJTableImport = null;
+    // ArrayList<KhuVucKhoDTO> listExcel = new ArrayList<KhuVucKhoDTO>();
+    // JFileChooser jf = new JFileChooser();
+    // int result = jf.showOpenDialog(null);
+    // jf.setDialogTitle("Open file");
+    // Workbook workbook = null;
+    // if (result == JFileChooser.APPROVE_OPTION) {
+    // excelFile = jf.getSelectedFile();
+    // ArrayList<KhuVucKhoDTO> excel = ExcelImport.readDataFromExcel(excelFile,
+    // KhuVucKhoDTO.class);
+    // System.out.println(excel.size());
+    // }
+    // }
     public void ListCustomersInDePot(ArrayList<SanPhamDTO> result) {
         right.removeAll();
         JLabel tit = new JLabel("Danh sách sản phẩm đang có ở khu vực");
@@ -265,7 +289,8 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                KhuVucKhoDialog kvkDialog = new KhuVucKhoDialog(this, owner, "Chỉnh sửa khu vực kho", true, "update", listKVK.get(index));
+                KhuVucKhoDialog kvkDialog = new KhuVucKhoDialog(this, owner, "Chỉnh sửa khu vực kho", true, "update",
+                        listKVKDAO.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("delete")) {
             int index = getRowSelected();
@@ -276,24 +301,23 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
                 if (input == 0) {
                     int check = 0;
                     for (SanPhamDTO i : listSP) {
-                        if (listKVK.get(index).getMakhuvuc() == i.getKhuvuckho()) {
+                        if (listKVKDAO.get(index).getMakhuvuc() == i.getKhuvuckho()) {
                             check++;
                             break;
                         }
                     }
                     if (check == 0) {
-                        kvkBUS.delete(listKVK.get(index), index);
-                        loadDataTable(listKVK);
-                    }
-                    else {
+                        kvkBUS.delete(listKVKDAO.get(index), index);
+                        loadDataTable(listKVKDAO);
+                    } else {
                         JOptionPane.showMessageDialog(this, "Không thể xóa kho vì vẫn còn sản phẩm trong kho.");
                     }
                 }
             }
         } else if (e.getSource() == search.btnReset) {
             search.txtSearchForm.setText("");
-            listKVK = kvkBUS.getAll();
-            loadDataTable(listKVK);
+            listKVKDAO = kvkBUS.getAll();
+            loadDataTable(listKVKDAO);
         } else if (e.getSource() == mainFunction.btn.get("import")) {
             importExcel();
         } else if (e.getSource() == mainFunction.btn.get("export")) {
@@ -309,7 +333,7 @@ public class KhuVucKho extends JPanel implements ActionListener, ItemListener {
     public void itemStateChanged(ItemEvent e) {
         String type = (String) search.cbxChoose.getSelectedItem();
         String txt = search.txtSearchForm.getText();
-        listKVK = kvkBUS.search(txt, type);
-        loadDataTable(listKVK);
+        listKVKDAO = kvkBUS.search(txt, type);
+        loadDataTable(listKVKDAO);
     }
 }

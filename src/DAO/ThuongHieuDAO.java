@@ -24,11 +24,17 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO> {
     public int insert(ThuongHieuDTO t) {
         int result = 0;
         try {
+            // tạo kết nối với cơ sở dữ liệu
             Connection con = (Connection) JDBCUtil.getConnection();
+            // sql
             String sql = "INSERT INTO `thuonghieu`(`tenthuonghieu`) VALUES (?)";
+            // tạo prepareStatement để truyền giá trị sql vào
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            // chèn dữ liệu vào
             pst.setString(1, t.getTenthuonghieu());
+            // stament update
             result = pst.executeUpdate();
+            // ngắt kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
             Logger.getLogger(ThuongHieuDTO.class.getName()).log(Level.SEVERE, null, ex);

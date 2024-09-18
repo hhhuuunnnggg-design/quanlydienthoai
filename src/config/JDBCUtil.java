@@ -4,21 +4,26 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
+import com.mysql.cj.jdbc.Driver;
+
 public class JDBCUtil {
 
     public static Connection getConnection() {
         Connection result = null;
         try {
             // Dang ky MySQL Driver voi DriverManager
+
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            //Cac thong so
+
+            // Cac thong so
             String url = "jdbc:mySQL://localhost:3306/quanlikhohang";
             String userName = "root";
             String password = "";
-            //Tao ket noi 
+            // Tao ket noi
             result = DriverManager.getConnection(url, userName, password);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Không thể kết nối đến cơ sở dữ liệu !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Không thể kết nối đến cơ sở dữ liệu !", "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
         return result;
     }

@@ -222,9 +222,10 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         PlainDocument loinhuan = (PlainDocument) txtgialoinhuan.getTxtForm().getDocument();
         loinhuan.setDocumentFilter(new NumericDocumentFilter());
 
-        txtphantramgiamgia = new InputForm("Phần trăm giảm giá");
-        PlainDocument giamgia = (PlainDocument) txtphantramgiamgia.getTxtForm().getDocument();
-        giamgia.setDocumentFilter(new NumericDocumentFilter());
+        // txtphantramgiamgia = new InputForm("Phần trăm giảm giá");
+        // PlainDocument giamgia = (PlainDocument)
+        // txtphantramgiamgia.getTxtForm().getDocument();
+        // giamgia.setDocumentFilter(new NumericDocumentFilter());
 
         txtgiaxuat = new InputForm("Giá xuất");
         PlainDocument xuat = (PlainDocument) txtgiaxuat.getTxtForm().getDocument();
@@ -249,30 +250,31 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             }
         });
 
-        txtphantramgiamgia.getTxtForm().getDocument().addDocumentListener(new DocumentListener() {
+        // txtphantramgiamgia.getTxtForm().getDocument().addDocumentListener(new
+        // DocumentListener() {
 
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                calculateGiamGia();
-            }
+        // @Override
+        // public void insertUpdate(DocumentEvent e) {
+        // calculateGiamGia();
+        // }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                calculateGiamGia();
-            }
+        // @Override
+        // public void removeUpdate(DocumentEvent e) {
+        // calculateGiamGia();
+        // }
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                calculateGiamGia();
-            }
+        // @Override
+        // public void changedUpdate(DocumentEvent e) {
+        // calculateGiamGia();
+        // }
 
-        });
+        // });
         cauhinhtop.add(cbxRom);
         cauhinhtop.add(cbxRam);
         cauhinhtop.add(cbxMausac);
         cauhinhtop.add(txtgianhap);
         cauhinhtop.add(txtgialoinhuan);
-        cauhinhtop.add(txtphantramgiamgia);
+        // cauhinhtop.add(txtphantramgiamgia);
         cauhinhtop.add(txtgiaxuat);
 
         JPanel cauhinhcenter = new JPanel(new BorderLayout());
