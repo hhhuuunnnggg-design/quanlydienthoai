@@ -1,21 +1,9 @@
 package GUI.Panel;
 
-import BUS.SanPhamBUS;
-import DAO.HeDieuHanhDAO;
-import DAO.KhuVucKhoDAO;
-import DAO.ThuongHieuDAO;
-import DAO.XuatXuDAO;
-import GUI.Component.IntegratedSearch;
-import GUI.Component.MainFunction;
-import GUI.Main;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import GUI.Component.PanelBorderRadius;
-import GUI.Component.TableSorter;
-import GUI.Dialog.ChiTietSanPhamDialog;
-import GUI.Dialog.SanPhamDialog;
-import helper.JTableExporter;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -24,9 +12,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import BUS.SanPhamBUS;
+import DAO.HeDieuHanhDAO;
+import DAO.KhuVucKhoDAO;
+import DAO.ThuongHieuDAO;
+import DAO.XuatXuDAO;
+import GUI.Main;
+import GUI.Component.IntegratedSearch;
+import GUI.Component.MainFunction;
+import GUI.Component.PanelBorderRadius;
+import GUI.Component.TableSorter;
+import GUI.Dialog.ChiTietSanPhamDialog;
+import GUI.Dialog.SanPhamDialog;
+import helper.JTableExporter;
 
 public final class SanPham extends JPanel implements ActionListener {
     PanelBorderRadius main, functionBar;
@@ -39,7 +51,7 @@ public final class SanPham extends JPanel implements ActionListener {
     DefaultTableModel tblModel;
     Main m;
     public SanPhamBUS spBUS = new SanPhamBUS();
-    
+
     public ArrayList<DTO.SanPhamDTO> listSP = spBUS.getAll();
 
     Color BackgroundColor = new Color(240, 247, 250);
@@ -51,7 +63,8 @@ public final class SanPham extends JPanel implements ActionListener {
         tableSanPham = new JTable();
         scrollTableSanPham = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã SP", "Tên sản phẩm", "Số lượng tồn","Thương hiệu", "Hệ điều hành", "Kích thước màn","Chip xử lý","Dung lượng pin","Xuất xứ", "Khu vực kho"};
+        String[] header = new String[] { "Mã SP.", "Tên sản phẩm", "Số lượng tồn", "Thương hiệu", "Hệ điều hành",
+                "Kích thước màn", "Chip xử lý", "Dung lượng pin", "Xuất xứ", "Khu vực kho" };
         tblModel.setColumnIdentifiers(header);
         tableSanPham.setModel(tblModel);
         scrollTableSanPham.setViewportView(tableSanPham);
@@ -75,20 +88,21 @@ public final class SanPham extends JPanel implements ActionListener {
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter, BorderLayout.CENTER);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm kiếm
+        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
+        // kiếm
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = {"create", "update", "delete", "detail", "phone", "export"};
+        String[] action = { "create", "update", "delete", "detail", "phone", "export" };
         mainFunction = new MainFunction(m.user.getManhomquyen(), "sanpham", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
         }
         functionBar.add(mainFunction);
 
-        search = new IntegratedSearch(new String[]{"Tất cả"});
+        search = new IntegratedSearch(new String[] { "Tất cả" });
         search.txtSearchForm.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -126,17 +140,19 @@ public final class SanPham extends JPanel implements ActionListener {
     public void loadDataTalbe(ArrayList<DTO.SanPhamDTO> result) {
         tblModel.setRowCount(0);
         for (DTO.SanPhamDTO sp : result) {
-            tblModel.addRow(new Object[]{sp.getMasp(), sp.getTensp(), 
-                sp.getSoluongton(), ThuongHieuDAO.getInstance().selectById(sp.getThuonghieu()+"").getTenthuonghieu(), 
-                HeDieuHanhDAO.getInstance().selectById(sp.getHedieuhanh()+"").getTenhdh(),
-                sp.getKichthuocman() + " inch", 
-                sp.getChipxuly(),sp.getDungluongpin() +"mAh",
-                XuatXuDAO.getInstance().selectById(sp.getXuatxu()+"").getTenxuatxu(), 
-                KhuVucKhoDAO.getInstance().selectById(sp.getKhuvuckho()+"").getTenkhuvuc()
+            tblModel.addRow(new Object[] { sp.getMasp(), sp.getTensp(),
+                    sp.getSoluongton(),
+                    ThuongHieuDAO.getInstance().selectById(sp.getThuonghieu() + "").getTenthuonghieu(),
+                    HeDieuHanhDAO.getInstance().selectById(sp.getHedieuhanh() + "").getTenhdh(),
+                    sp.getKichthuocman() + " inch",
+                    sp.getChipxuly(), sp.getDungluongpin() + "mAh",
+                    XuatXuDAO.getInstance().selectById(sp.getXuatxu() + "").getTenxuatxu(),
+                    KhuVucKhoDAO.getInstance().selectById(sp.getKhuvuckho() + "").getTenkhuvuc()
             });
         }
     }
 
+    //
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFunction.btn.get("create")) {
@@ -144,12 +160,14 @@ public final class SanPham extends JPanel implements ActionListener {
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                SanPhamDialog spDialog = new SanPhamDialog(this, owner, "Chỉnh sửa sản phẩm", true, "update", listSP.get(index));
+                SanPhamDialog spDialog = new SanPhamDialog(this, owner, "Chỉnh sửa sản phẩm", true, "update",
+                        listSP.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("delete")) {
             int index = getRowSelected();
             if (index != -1) {
-                int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa Sản phẩm :)!", "Xóa sản phẩm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa Sản phẩm :)!",
+                        "Xóa sản phẩm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (input == 0) {
                     spBUS.delete(listSP.get(index));
                     loadDataTalbe(listSP);
@@ -158,7 +176,8 @@ public final class SanPham extends JPanel implements ActionListener {
         } else if (e.getSource() == mainFunction.btn.get("detail")) {
             int index = getRowSelected();
             if (index != -1) {
-                SanPhamDialog spDialog = new SanPhamDialog(this, owner, "Xem chi tiết sản phẩm", true, "view", listSP.get(index));
+                SanPhamDialog spDialog = new SanPhamDialog(this, owner, "Xem chi tiết sản phẩm", true, "view",
+                        listSP.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("phone")) {
             int index = getRowSelected();
@@ -171,7 +190,7 @@ public final class SanPham extends JPanel implements ActionListener {
             } catch (IOException ex) {
                 Logger.getLogger(SanPham.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if(e.getSource() == mainFunction.btn.get("import")) {
+        } else if (e.getSource() == mainFunction.btn.get("import")) {
             JOptionPane.showMessageDialog(null, "Chức năng không khả dụng");
         }
     }
