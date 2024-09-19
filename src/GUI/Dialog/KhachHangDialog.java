@@ -32,15 +32,16 @@ public class KhachHangDialog extends JDialog implements MouseListener {
         this.jpKH = jpKH;
         tenKH = new InputForm("Tên khách hàng");
         sdtKH = new InputForm("Số điện thoại");
-        PlainDocument phonex = (PlainDocument)sdtKH.getTxtForm().getDocument();
+        PlainDocument phonex = (PlainDocument) sdtKH.getTxtForm().getDocument();
         phonex.setDocumentFilter((new NumericDocumentFilter()));
         diachiKH = new InputForm("Địa chỉ");
         initComponents(title, type);
     }
 
-    public KhachHangDialog(KhachHang jpKH, JFrame owner, String title, boolean modal, String type, DTO.KhachHangDTO kh) {
+    public KhachHangDialog(KhachHang jpKH, JFrame owner, String title, boolean modal, String type,
+            DTO.KhachHangDTO kh) {
         super(owner, title, modal);
-        this.kh=kh;
+        this.kh = kh;
         maKH = new JTextField("");
         setMaKH(Integer.toString(kh.getMaKH()));
         tenKH = new InputForm("Tên khách hàng");
@@ -71,7 +72,7 @@ public class KhachHangDialog extends JDialog implements MouseListener {
         btnCapNhat = new ButtonCustom("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustom("Huỷ bỏ", "danger", 14);
 
-        //Add MouseListener btn
+        // Add MouseListener btn
         btnThem.addMouseListener(this);
         btnCapNhat.addMouseListener(this);
         btnHuyBo.addMouseListener(this);
@@ -132,36 +133,41 @@ public class KhachHangDialog extends JDialog implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated
+        // from
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    boolean Validation(){
+    boolean Validation() {
         if (Validation.isEmpty(tenKH.getText())) {
-            JOptionPane.showMessageDialog(this, "Tên khách hàng không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tên khách hàng không được rỗng", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-         else if (Validation.isEmpty(sdtKH.getText()) || !Validation.isNumber(sdtKH.getText()) && sdtKH.getText().length()!=10) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+        } else if (Validation.isEmpty(sdtKH.getText())
+                || !Validation.isNumber(sdtKH.getText()) && sdtKH.getText().length() != 10) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-        else  if (Validation.isEmpty(diachiKH.getText())) {
+        } else if (Validation.isEmpty(diachiKH.getText())) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-          return true;
+        }
+        return true;
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == btnThem && Validation()) {
-                int id=KhachHangDAO.getInstance().getAutoIncrement();
-                jpKH.khachhangBUS.add(new DTO.KhachHangDTO(id, tenKH.getText(),sdtKH.getText(), diachiKH.getText()));
-                jpKH.loadDataTable(jpKH.listkh);
-                dispose();
+            int id = KhachHangDAO.getInstance().getAutoIncrement();
+            jpKH.khachhangBUS.add(new DTO.KhachHangDTO(id, tenKH.getText(), sdtKH.getText(), diachiKH.getText()));
+            jpKH.loadDataTable(jpKH.listkh);
+            dispose();
 
         } else if (e.getSource() == btnHuyBo) {
             dispose();
         } else if (e.getSource() == btnCapNhat && Validation()) {
-            jpKH.khachhangBUS.update(new KhachHangDTO(kh.getMaKH(), tenKH.getText(), sdtKH.getText(), diachiKH.getText()));
+            jpKH.khachhangBUS
+                    .update(new KhachHangDTO(kh.getMaKH(), tenKH.getText(), sdtKH.getText(), diachiKH.getText()));
             jpKH.loadDataTable(jpKH.listkh);
             dispose();
         }
@@ -185,17 +191,23 @@ public class KhachHangDialog extends JDialog implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated
+        // from
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated
+        // from
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated
+        // from
+        // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
