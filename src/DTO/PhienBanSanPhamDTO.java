@@ -42,6 +42,23 @@ public class PhienBanSanPhamDTO {
         this.gianhap = gianhap;
         this.giaxuat = giaxuat;
     }
+    
+       public PhienBanSanPhamDTO(int maphienbansp, int masp, int ram, int rom, int mausac, int soluongton) {
+        this.maphienbansp = maphienbansp;
+        this.masp = masp;
+        this.ram = ram;
+        this.rom = rom;
+        this.mausac = mausac;
+        this.soluongton = soluongton;
+    }
+       
+             public PhienBanSanPhamDTO(int maphienbansp, int masp, int ram, int rom, int mausac) {
+        this.maphienbansp = maphienbansp;
+        this.masp = masp;
+        this.ram = ram;
+        this.rom = rom;
+        this.mausac = mausac;
+    }
 
     public int getMaphienbansp() {
         return maphienbansp;
