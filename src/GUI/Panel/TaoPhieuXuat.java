@@ -36,7 +36,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import GUI.Dialog.KhachHangDialog;
+
 import BUS.ChiTietSanPhamBUS;
 import BUS.DungLuongRamBUS;
 import BUS.DungLuongRomBUS;
@@ -67,9 +67,11 @@ import GUI.Component.SelectForm;
 import GUI.Dialog.ListKhachHang;
 import GUI.Dialog.QRCode_Dialog;
 import GUI.Dialog.SelectImei;
+import GUI.dangngoitesst.KhachHangGUI;
 import helper.Formater;
 
 public final class TaoPhieuXuat extends JPanel {
+
     MainFunction mainFunction;
     PhienBanSanPhamBUS phienBanBus = new PhienBanSanPhamBUS();
     JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -567,12 +569,9 @@ public final class TaoPhieuXuat extends JPanel {
         btnThemKhachHang.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == mainFunction.btn.get("create")) {
-                    // KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Thêm khách
-                    // hàng", true, "create");
-                }
-
+                new KhachHangGUI();
             }
+
         });
 
         btnQuayLai.addActionListener((ActionEvent e) -> {
