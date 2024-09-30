@@ -68,7 +68,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     private ButtonCustom btnThemCHMS, btnHuyBo, btnAddCauHinh, btnEditCTCauHinh, btnDeleteCauHinh, btnResetCauHinh,
             btnAddSanPham, btnBack, btnViewCauHinh;
     InputForm tenSP, chipxuly, dungluongpin, kichthuocman, thoigianbaohanh, phienbanhdh, camerasau, cameratruoc;
-//    InputForm txtgianhap, txtgiaxuat, txtgialoinhuan, txtphantramgiamgia;
+    // InputForm txtgianhap, txtgiaxuat, txtgialoinhuan, txtphantramgiamgia;
     SelectForm cbxRom, cbxRam, cbxMausac, hedieuhanh, xuatxu;
     SelectForm thuonghieu, khuvuc;
     InputImage hinhanh;
@@ -317,7 +317,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
 
     }
 
-
     public void initComponents(String title, String type) {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         this.setSize(new Dimension(1150, 480));
@@ -422,8 +421,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
                     listch.get(index).setMausac(mausacBus.getByIndex(cbxMausac.getSelectedIndex()).getMamau());
                     listch.get(index).setRam(ramBus.getByIndex(cbxRam.getSelectedIndex()).getMadlram());
                     listch.get(index).setRom(romBus.getByIndex(cbxRom.getSelectedIndex()).getMadungluongrom());
-//                    listch.get(index).setGianhap(Integer.parseInt(txtgianhap.getText()));
-//                    listch.get(index).setGiaxuat(Integer.parseInt(txtgiaxuat.getText()));
+                    // listch.get(index).setGianhap(Integer.parseInt(txtgianhap.getText()));
+                    // listch.get(index).setGiaxuat(Integer.parseInt(txtgiaxuat.getText()));
                     PhienBanSanPhamDAO.getInstance().update(listch.get(index));
                     loadDataToTableCauHinh(this.listch);
                     resetFormCauHinh();
@@ -473,8 +472,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
                 listch.get(index).setMausac(mausacBus.getByIndex(cbxMausac.getSelectedIndex()).getMamau());
                 listch.get(index).setRam(ramBus.getByIndex(cbxRam.getSelectedIndex()).getMadlram());
                 listch.get(index).setRom(romBus.getByIndex(cbxRom.getSelectedIndex()).getMadungluongrom());
-//                listch.get(index).setGianhap(Integer.parseInt(txtgianhap.getText()));
-//                listch.get(index).setGiaxuat(Integer.parseInt(txtgiaxuat.getText()));
+                // listch.get(index).setGianhap(Integer.parseInt(txtgianhap.getText()));
+                // listch.get(index).setGiaxuat(Integer.parseInt(txtgiaxuat.getText()));
                 loadDataToTableCauHinh(this.listch);
                 resetFormCauHinh();
             }
@@ -529,8 +528,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         int rom = romBus.getByIndex(cbxRom.getSelectedIndex()).getMadungluongrom();
         int ram = ramBus.getByIndex(cbxRam.getSelectedIndex()).getMadlram();
         int mausac = mausacBus.getByIndex(cbxMausac.getSelectedIndex()).getMamau();
-//        int gianhap = Integer.parseInt(txtgianhap.getText());
-//        int giaban = Integer.parseInt(txtgiaxuat.getText());
+        // int gianhap = Integer.parseInt(txtgianhap.getText());
+        // int giaban = Integer.parseInt(txtgiaxuat.getText());
         PhienBanSanPhamDTO chsp = new PhienBanSanPhamDTO(mach, masp, ram, rom, mausac, 0);
         mach++;
         return chsp;
@@ -540,8 +539,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         int rom = romBus.getByIndex(cbxRom.getSelectedIndex()).getMadungluongrom();
         int ram = ramBus.getByIndex(cbxRam.getSelectedIndex()).getMadlram();
         int mausac = mausacBus.getByIndex(cbxMausac.getSelectedIndex()).getMamau();
-//        int gianhap = Integer.parseInt(txtgianhap.getText());
-//        int giaban = Integer.parseInt(txtgiaxuat.getText());
+        // int gianhap = Integer.parseInt(txtgianhap.getText());
+        // int giaban = Integer.parseInt(txtgiaxuat.getText());
         PhienBanSanPhamDTO chsp = new PhienBanSanPhamDTO(PhienBanSanPhamDAO.getInstance().getAutoIncrement(), masanpham,
                 ram, rom, mausac);
         this.listch.add(chsp);
@@ -563,7 +562,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         return check;
     }
 
-
     public boolean checkTonTai() {
         boolean check = true;
         if (PhienBanSanPhamBUS.checkDuplicate(listch, getCauHinh())) {
@@ -579,7 +577,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             String mau = mausacBus.getTenMau(ch.get(i).getMausac());
             int ram = ramBus.getKichThuocById(ch.get(i).getRam());
             int rom = romBus.getKichThuocById(ch.get(i).getRom());
-            tblModelch.addRow(new Object[] { i + 1, ram + "GB", rom + "GB",mau});
+            tblModelch.addRow(new Object[] { i + 1, ram + "GB", rom + "GB", mau });
         }
     }
 

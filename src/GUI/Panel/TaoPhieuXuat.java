@@ -64,10 +64,10 @@ import GUI.Component.MainFunction;
 import GUI.Component.Notification;
 import GUI.Component.PanelBorderRadius;
 import GUI.Component.SelectForm;
+import GUI.Dialog.KhachHangDialog;
 import GUI.Dialog.ListKhachHang;
 import GUI.Dialog.QRCode_Dialog;
 import GUI.Dialog.SelectImei;
-import GUI.dangngoitesst.KhachHangGUI;
 import helper.Formater;
 
 public final class TaoPhieuXuat extends JPanel {
@@ -569,7 +569,8 @@ public final class TaoPhieuXuat extends JPanel {
         btnThemKhachHang.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new KhachHangGUI();
+                KhachHang jdncc = new KhachHang(mainChinh);
+                KhachHangDialog test = new KhachHangDialog(jdncc, owner, "thêm khách hàng mới", true, "create");
             }
 
         });
