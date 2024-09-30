@@ -214,18 +214,13 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         cbxRam = new SelectForm("RAM", ramBus.getArrKichThuoc());
         cbxMausac = new SelectForm("Màu sắc", mausacBus.getArrTenMauSac());
 
-        txtgianhap = new InputForm("Giá nhập");
+        txtgianhap = new InputForm("Giá nhập tồn kho trung bình");
         PlainDocument nhap = (PlainDocument) txtgianhap.getTxtForm().getDocument();
         nhap.setDocumentFilter((new NumericDocumentFilter()));
 
         txtgialoinhuan = new InputForm("Phần trăm lợi nhuận");
         PlainDocument loinhuan = (PlainDocument) txtgialoinhuan.getTxtForm().getDocument();
         loinhuan.setDocumentFilter(new NumericDocumentFilter());
-
-        // txtphantramgiamgia = new InputForm("Phần trăm giảm giá");
-        // PlainDocument giamgia = (PlainDocument)
-        // txtphantramgiamgia.getTxtForm().getDocument();
-        // giamgia.setDocumentFilter(new NumericDocumentFilter());
 
         txtgiaxuat = new InputForm("Giá xuất");
         PlainDocument xuat = (PlainDocument) txtgiaxuat.getTxtForm().getDocument();
@@ -250,25 +245,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             }
         });
 
-        // txtphantramgiamgia.getTxtForm().getDocument().addDocumentListener(new
-        // DocumentListener() {
-
-        // @Override
-        // public void insertUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // @Override
-        // public void removeUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // @Override
-        // public void changedUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // });
         cauhinhtop.add(cbxRom);
         cauhinhtop.add(cbxRam);
         cauhinhtop.add(cbxMausac);
@@ -300,7 +276,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         scrolltblcauhinh = new JScrollPane(tblcauhinh);
         tblModelch = new DefaultTableModel();
         // đây là của table
-        String[] header = new String[] { "STT", "RAM", "ROM", "Màu sắc", "Giá nhập", "Giá xuất" };
+        String[] header = new String[] { "STT", "RAM", "ROM", "Màu sắc", "Giá nhập tồn kho trung bình", "Giá xuất." };
         tblModelch.setColumnIdentifiers(header);
         tblcauhinh.setModel(tblModelch);
         scrolltblcauhinh.setViewportView(tblcauhinh);
