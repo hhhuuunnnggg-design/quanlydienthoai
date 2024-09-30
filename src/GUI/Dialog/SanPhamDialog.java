@@ -508,17 +508,17 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     public void setInfo(SanPhamDTO sp) {
         hinhanh.setUrl_img(sp.getHinhanh());
         tenSP.setText(sp.getTensp());
-        xuatxu.setSelectedItem(sp.getXuatxu());
+        xuatxu.setSelectedIndex(xuatXuBUS.getIndexByMaXX(sp.getXuatxu()));
         chipxuly.setText(sp.getChipxuly());
         dungluongpin.setText(Integer.toString(sp.getDungluongpin()));
         kichthuocman.setText(Double.toString(sp.getKichthuocman()));
-        hedieuhanh.setSelectedItem(sp.getHedieuhanh());
+        hedieuhanh.setSelectedIndex(heDieuHanhBUS.getIndexByMaMau(sp.getHedieuhanh()));
         camerasau.setText(sp.getCamerasau());
         cameratruoc.setText(sp.getCameratruoc());
         thoigianbaohanh.setText(Integer.toString(sp.getThoigianbaohanh()));
         phienbanhdh.setText(Integer.toString(sp.getPhienbanhdh()));
         thuonghieu.setSelectedIndex(thuonghieuBus.getIndexByMaLH(sp.getThuonghieu()));
-        khuvuc.setSelectedIndex(jpSP.spBUS.getIndexByMaSP(sp.getKhuvuckho()));
+        khuvuc.setSelectedIndex(kvkhoBus.getIndexByMaKVK(sp.getKhuvuckho()));
     }
 
     public PhienBanSanPhamDTO getCauHinh() {
