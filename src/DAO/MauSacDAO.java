@@ -61,7 +61,7 @@ public class MauSacDAO implements DAOinterface<MauSacDTO> {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `mausac` SET `trangthai` = 0 WHERE mamau = ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
-            pst.setString(1,t);
+            pst.setString(1, t);
             result = pst.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
@@ -89,7 +89,7 @@ public class MauSacDAO implements DAOinterface<MauSacDTO> {
         }
         return result;
     }
-    
+
     public ArrayList<MauSacDTO> getAll() {
         ArrayList<MauSacDTO> result = new ArrayList<>();
         try {
@@ -149,5 +149,17 @@ public class MauSacDAO implements DAOinterface<MauSacDTO> {
             Logger.getLogger(KhuVucKhoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<MauSacDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 }

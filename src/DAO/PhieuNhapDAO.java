@@ -23,8 +23,7 @@ public class PhieuNhapDAO implements DAOinterface<PhieuNhapDTO> {
     public static PhieuNhapDAO getInstance() {
         return new PhieuNhapDAO();
     }
-    
-    
+
     @Override
     public int insert(PhieuNhapDTO t) {
         int result = 0;
@@ -136,7 +135,7 @@ public class PhieuNhapDAO implements DAOinterface<PhieuNhapDTO> {
             String sql = "SELECT * FROM phieunhap WHERE tongtien BETWEEN ? AND ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setLong(1, min);
-            pst.setLong(2,max);
+            pst.setLong(2, max);
 
             ResultSet rs = (ResultSet) pst.executeQuery();
             while (rs.next()) {
@@ -154,8 +153,8 @@ public class PhieuNhapDAO implements DAOinterface<PhieuNhapDTO> {
         }
         return result;
     }
-    
-    public boolean checkCancelPn(int maphieu){
+
+    public boolean checkCancelPn(int maphieu) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
@@ -177,19 +176,20 @@ public class PhieuNhapDAO implements DAOinterface<PhieuNhapDTO> {
             System.out.println(e);
         }
         for (ChiTietSanPhamDTO chiTietSanPhamDTO : result) {
-            if(chiTietSanPhamDTO.getMaphieuxuat()!=0){
+            if (chiTietSanPhamDTO.getMaphieuxuat() != 0) {
                 return false;
             }
         }
         return true;
     }
-    
-    public int cancelPhieuNhap(int maphieu){
+
+    public int cancelPhieuNhap(int maphieu) {
         int result = 0;
         ChiTietSanPhamDAO.getInstance().deletePn(maphieu);
         ArrayList<ChiTietPhieuNhapDTO> arrCt = ChiTietPhieuNhapDAO.getInstance().selectAll(Integer.toString(maphieu));
         for (ChiTietPhieuNhapDTO chiTietPhieuNhapDTO : arrCt) {
-            PhienBanSanPhamDAO.getInstance().updateSoLuongTon(chiTietPhieuNhapDTO.getMaphienbansp(), -(chiTietPhieuNhapDTO.getSoluong()));
+            PhienBanSanPhamDAO.getInstance().updateSoLuongTon(chiTietPhieuNhapDTO.getMaphienbansp(),
+                    -(chiTietPhieuNhapDTO.getSoluong()));
         }
         ChiTietPhieuNhapDAO.getInstance().delete(Integer.toString(maphieu));
         try {
@@ -224,6 +224,18 @@ public class PhieuNhapDAO implements DAOinterface<PhieuNhapDTO> {
             Logger.getLogger(PhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<PhieuNhapDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 
 }

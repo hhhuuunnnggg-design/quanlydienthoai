@@ -131,4 +131,16 @@ public class NhomQuyenDAO implements DAOinterface<NhomQuyenDTO> {
         }
         return result;
     }
+
+    @Override
+    public ArrayList<NhomQuyenDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
 }

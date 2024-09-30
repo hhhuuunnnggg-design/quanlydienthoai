@@ -114,7 +114,9 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                SanPhamDTO sp = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
+                SanPhamDTO sp = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman,
+                        hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho,
+                        soluongton);
                 result.add(sp);
             }
             JDBCUtil.closeConnection(con);
@@ -148,14 +150,15 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
+                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh,
+                        phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
         }
         return result;
     }
-    
+
     public SanPhamDTO selectByPhienBan(String t) {
         SanPhamDTO result = null;
         try {
@@ -180,7 +183,8 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
+                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh,
+                        phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -227,5 +231,17 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
             Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<SanPhamDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 }

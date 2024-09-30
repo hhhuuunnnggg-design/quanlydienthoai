@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  *
  * @author robot
  */
-public class PhieuKiemKeDAO implements DAOinterface<PhieuKiemKeDTO>{
-    
-    public static PhieuKiemKeDAO getInstance(){
+public class PhieuKiemKeDAO implements DAOinterface<PhieuKiemKeDTO> {
+
+    public static PhieuKiemKeDAO getInstance() {
         return new PhieuKiemKeDAO();
     }
 
@@ -41,7 +41,8 @@ public class PhieuKiemKeDAO implements DAOinterface<PhieuKiemKeDTO>{
 
     @Override
     public int update(PhieuKiemKeDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -84,7 +85,8 @@ public class PhieuKiemKeDAO implements DAOinterface<PhieuKiemKeDTO>{
 
     @Override
     public PhieuKiemKeDTO selectById(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -107,5 +109,17 @@ public class PhieuKiemKeDAO implements DAOinterface<PhieuKiemKeDTO>{
         }
         return result;
     }
-    
+
+    @Override
+    public ArrayList<PhieuKiemKeDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+
 }

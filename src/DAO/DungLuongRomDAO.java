@@ -135,4 +135,16 @@ public class DungLuongRomDAO implements DAOinterface<DungLuongRomDTO> {
         return result;
     }
 
+    @Override
+    public ArrayList<DungLuongRomDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+
 }

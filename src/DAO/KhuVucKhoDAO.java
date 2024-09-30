@@ -142,4 +142,16 @@ public class KhuVucKhoDAO implements DAOinterface<KhuVucKhoDTO> {
         return result;
     }
 
+    @Override
+    public ArrayList<KhuVucKhoDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+
 }

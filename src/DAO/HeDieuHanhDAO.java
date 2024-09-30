@@ -18,11 +18,12 @@ import java.util.ArrayList;
  *
  * @author 84907
  */
-public class HeDieuHanhDAO implements DAOinterface<HeDieuHanhDTO>{
+public class HeDieuHanhDAO implements DAOinterface<HeDieuHanhDTO> {
 
     public static HeDieuHanhDAO getInstance() {
         return new HeDieuHanhDAO();
     }
+
     @Override
     public int insert(HeDieuHanhDTO t) {
         int result = 0;
@@ -64,7 +65,7 @@ public class HeDieuHanhDAO implements DAOinterface<HeDieuHanhDTO>{
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `hedieuhanh` SET `trangthai` = 0 WHERE mahedieuhanh = ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
-            pst.setString(1,t);
+            pst.setString(1, t);
             result = pst.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
@@ -135,5 +136,16 @@ public class HeDieuHanhDAO implements DAOinterface<HeDieuHanhDTO>{
         }
         return result;
     }
+
+    @Override
+    public ArrayList<HeDieuHanhDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
     }
 
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+}

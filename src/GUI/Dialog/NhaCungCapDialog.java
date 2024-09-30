@@ -77,7 +77,7 @@ public class NhaCungCapDialog extends JDialog implements ActionListener {
         pnbottom = new JPanel(new FlowLayout());
         pnbottom.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnbottom.setBackground(Color.white);
-        btnThem = new ButtonCustom("Thêm đơn vị", "success", 14);
+        btnThem = new ButtonCustom("thêm nhà cung cấp", "success", 14);
         btnCapNhat = new ButtonCustom("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustom("Huỷ bỏ", "danger", 14);
 

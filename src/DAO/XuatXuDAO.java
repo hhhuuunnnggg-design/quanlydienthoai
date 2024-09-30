@@ -18,10 +18,11 @@ import java.util.logging.Logger;
  *
  * @author 84907
  */
-public class XuatXuDAO implements DAOinterface<XuatXuDTO>{
-     public static XuatXuDAO getInstance() {
+public class XuatXuDAO implements DAOinterface<XuatXuDTO> {
+    public static XuatXuDAO getInstance() {
         return new XuatXuDAO();
     }
+
     @Override
     public int insert(XuatXuDTO t) {
         int result = 0;
@@ -63,7 +64,7 @@ public class XuatXuDAO implements DAOinterface<XuatXuDTO>{
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `xuatxu` SET `trangthai` = 0 WHERE maxuatxu = ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
-            pst.setString(1,t);
+            pst.setString(1, t);
             result = pst.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
@@ -132,5 +133,17 @@ public class XuatXuDAO implements DAOinterface<XuatXuDTO>{
             Logger.getLogger(XuatXuDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<XuatXuDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 }
