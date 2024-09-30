@@ -52,7 +52,7 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             pst.setString(3, t.getDiachi());
             pst.setString(4, t.getSdt());
             pst.setInt(5, t.getMaKH());
-            
+
             result = pst.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException ex) {
@@ -85,13 +85,13 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             String sql = "SELECT * FROM khachhang WHERE trangthai=1";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             ResultSet rs = (ResultSet) pst.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int makh = rs.getInt("makh");
                 String tenkhachhang = rs.getString("tenkhachhang");
                 String diachi = rs.getString("diachi");
                 String sdt = rs.getString("sdt");
                 Date ngaythamgia = rs.getDate("ngaythamgia");
-                KhachHangDTO kh = new KhachHangDTO(makh, tenkhachhang, sdt, diachi,ngaythamgia);
+                KhachHangDTO kh = new KhachHangDTO(makh, tenkhachhang, sdt, diachi, ngaythamgia);
                 result.add(kh);
             }
             JDBCUtil.closeConnection(con);
@@ -110,13 +110,13 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, t);
             ResultSet rs = (ResultSet) pst.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int makh = rs.getInt("makh");
                 String tenkhachhang = rs.getString("tenkhachhang");
                 String diachi = rs.getString("diachi");
                 String sdt = rs.getString("sdt");
                 Date ngaythamgia = rs.getDate("ngaythamgia");
-                result = new KhachHangDTO(makh, tenkhachhang, sdt, diachi,ngaythamgia);
+                result = new KhachHangDTO(makh, tenkhachhang, sdt, diachi, ngaythamgia);
             }
             JDBCUtil.closeConnection(con);
         } catch (Exception e) {
@@ -133,17 +133,29 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             String sql = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'quanlikhohang' AND   TABLE_NAME   = 'khachhang'";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             ResultSet rs2 = pst.executeQuery(sql);
-            if (!rs2.isBeforeFirst() ) {
+            if (!rs2.isBeforeFirst()) {
                 System.out.println("No data");
             } else {
-                while ( rs2.next() ) {
+                while (rs2.next()) {
                     result = rs2.getInt("AUTO_INCREMENT");
-                    
+
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(KhachHangDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<KhachHangDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 }

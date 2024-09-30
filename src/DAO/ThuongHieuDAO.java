@@ -138,4 +138,16 @@ public class ThuongHieuDAO implements DAOinterface<ThuongHieuDTO> {
         return result;
     }
 
+    @Override
+    public ArrayList<ThuongHieuDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+
 }

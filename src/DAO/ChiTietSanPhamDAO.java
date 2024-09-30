@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  * @author Tran Nhat Sinh
  */
 public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
-    
-    public static ChiTietSanPhamDAO getInstance(){
+
+    public static ChiTietSanPhamDAO getInstance() {
         return new ChiTietSanPhamDAO();
     }
 
@@ -40,10 +40,10 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public int insert_mutiple(ArrayList<ChiTietSanPhamDTO> list) {
         int result = 0;
-        for(ChiTietSanPhamDTO sp : list) {
+        for (ChiTietSanPhamDTO sp : list) {
             result += this.insert(sp);
         }
         return result;
@@ -68,7 +68,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public int updateXuat(ChiTietSanPhamDTO t) {
         int result = 0;
         try {
@@ -85,7 +85,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public int reset(ChiTietSanPhamDTO t) {
         int result = 0;
         try {
@@ -115,7 +115,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public int deletePn(int t) {
         int result = 0;
         try {
@@ -153,8 +153,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
-    
+
     public ArrayList<ChiTietSanPhamDTO> selectAllbyPb(int mapbsp) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
@@ -178,6 +177,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
+
     public ArrayList<ChiTietSanPhamDTO> selectbyPb(int mapbsp) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
@@ -201,14 +201,15 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    public ArrayList<ChiTietSanPhamDTO> selectPBvaTT(int mapbsp,int tt) {
+
+    public ArrayList<ChiTietSanPhamDTO> selectPBvaTT(int mapbsp, int tt) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "SELECT * FROM ctsanpham where maphienbansp = ? and tinhtrang = ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setInt(1, mapbsp);
-            pst.setInt(2,tt);
+            pst.setInt(2, tt);
             ResultSet rs = (ResultSet) pst.executeQuery();
             while (rs.next()) {
                 String imei = rs.getString("maimei");
@@ -228,14 +229,16 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
 
     @Override
     public ChiTietSanPhamDTO selectById(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public int getAutoIncrement() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public ArrayList<Integer> getMaPhienBanSPOfPhieu(int maphieu) {
         ArrayList<Integer> result = new ArrayList<>();
         try {
@@ -254,7 +257,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public ArrayList<ChiTietSanPhamDTO> selectAllByMaPhieuNhap(int maphieunhap) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
@@ -278,7 +281,7 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
     public ArrayList<ChiTietSanPhamDTO> selectAllByMaPhieuXuat(int maphieunhap) {
         ArrayList<ChiTietSanPhamDTO> result = new ArrayList<>();
         try {
@@ -302,5 +305,17 @@ public class ChiTietSanPhamDAO implements DAOinterface<ChiTietSanPhamDTO> {
         }
         return result;
     }
-    
+
+    @Override
+    public ArrayList<ChiTietSanPhamDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    }
+
 }

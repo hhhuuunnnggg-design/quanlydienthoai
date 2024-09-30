@@ -1,18 +1,23 @@
 package GUI;
 
-import DTO.TaiKhoanDTO;
-import GUI.Panel.TrangChu;
-import java.awt.*;
-import javax.swing.*;
-import GUI.Component.MenuTaskbar;
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import javax.swing.border.EmptyBorder;
+
+import DTO.TaiKhoanDTO;
+import GUI.Component.MenuTaskbar;
+import GUI.Panel.TrangChu;
 
 public class Main extends JFrame {
 

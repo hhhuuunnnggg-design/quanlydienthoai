@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,6 +62,7 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
     JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
     Color BackgroundColor = new Color(240, 247, 250);
     DefaultTableModel tblModel;
+    JButton btnStopHopTac, btnAgainHopTac;
     Main m;
     public NhaCungCapBUS nccBUS = new NhaCungCapBUS();
     public ArrayList<NhaCungCapDTO> listncc = nccBUS.getAll();
@@ -87,8 +89,7 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
 
-        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở
-        // giữa mà contentCenter không bị dính sát vào các thành phần khác
+        // Tạo các panel để tạo khoảng cách
         pnlBorder1 = new JPanel();
         pnlBorder1.setPreferredSize(new Dimension(0, 10));
         pnlBorder1.setBackground(BackgroundColor);
@@ -115,22 +116,37 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter, BorderLayout.CENTER);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
-        // kiếm
+        // Tạo thanh chức năng
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
-        functionBar.setLayout(new GridLayout(1, 2, 50, 0));
+        functionBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); // Thay đổi layout
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = { "create", "update", "delete", "detail", "import", "export" };
+        String[] action = { "update", "delete", "detail", "import", "export" };
         mainFunction = new MainFunction(m.user.getManhomquyen(), "nhacungcap", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
         }
         functionBar.add(mainFunction);
 
+        // Tạo nút "Danh sách ngưng hợp tác"
+        btnStopHopTac = new JButton("Danh sách ngưng hợp tác");
+        btnStopHopTac.setPreferredSize(new Dimension(180, 40)); // Đặt kích thước
+        btnStopHopTac.setMaximumSize(new Dimension(150, 40)); // Đặt kích thước tối đa
+        btnStopHopTac.setBackground(Color.green);
+        btnStopHopTac.addActionListener(this);
+        functionBar.add(btnStopHopTac);
+        // tạo nút bấm hợp tác lại nè
+        btnAgainHopTac = new JButton("Hợp tác lại");
+        btnAgainHopTac.setVisible(false);
+        btnAgainHopTac.setPreferredSize(new Dimension(100, 40)); // Đặt kích thước
+        btnAgainHopTac.setMaximumSize(new Dimension(150, 40)); // Đặt kích thước tối đa
+        btnAgainHopTac.setBackground(Color.orange);
+        btnAgainHopTac.addActionListener(this);
+        functionBar.add(btnAgainHopTac);
+        // Tạo thanh tìm kiếm
         search = new IntegratedSearch(
-                new String[] { "Tất cả", "Mã nhà cung cấp", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại" });
+                new String[] { "Tất cả", "Mã nhà cung cấp!", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại" });
         search.cbxChoose.addItemListener(this);
         search.txtSearchForm.addKeyListener(new KeyAdapter() {
             @Override
@@ -145,11 +161,11 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         search.btnReset.addActionListener(this);
         functionBar.add(search);
         contentCenter.add(functionBar, BorderLayout.NORTH);
-        // main là phần ở dưới để thống kê bảng biểu
+
+        // Phần thống kê bảng biểu
         main = new PanelBorderRadius();
         BoxLayout boxly = new BoxLayout(main, BoxLayout.Y_AXIS);
         main.setLayout(boxly);
-        // main.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentCenter.add(main, BorderLayout.CENTER);
         main.add(scrollTableSanPham);
     }
@@ -278,9 +294,43 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
             } catch (IOException ex) {
                 Logger.getLogger(NhaCungCap.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if (e.getSource() == btnStopHopTac) {
+            listncc = nccBUS.getAllStopped();
+            if (listncc != null && !listncc.isEmpty()) {
+                btnAgainHopTac.setVisible(true);
+                loadDataTable(listncc); // Tải dữ liệu vào bảng
+            } else {
+                btnAgainHopTac.setVisible(false);
+                JOptionPane.showMessageDialog(this, "Không có danh sách ngưng hợp tác với nhà cung cấp");
+            }
+
+        } else if (e.getSource() == btnAgainHopTac) {
+            int index = getRowSelected(); // Lấy chỉ số hàng được chọn
+            if (index != -1) {
+                int input = JOptionPane.showConfirmDialog(null,
+                        "Bạn có chắc chắn muốn hợp tác lại với nhà cung cấp này!", "Hợp tác lại",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (input == JOptionPane.OK_OPTION) {
+                    // Khôi phục trạng thái hợp tác
+                    boolean restored = nccBUS.restore(listncc.get(index), index); // Giả sử restore trả về true/false
+                    if (restored) {
+                        // Tải lại danh sách nhà cung cấp từ cơ sở dữ liệu
+                        listncc = nccBUS.getAll(); // Hoặc getAllActive nếu cần thiết
+                        // Cập nhật giao diện người dùng
+                        SwingUtilities.invokeLater(() -> {
+                            loadDataTable(listncc);
+                            JOptionPane.showMessageDialog(null, "Hợp tác lại thành công!");
+                        });
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Khôi phục không thành công.");
+                    }
+                }
+            }
+            System.out.println("Bạn đã click vào hợp tác lại");
         }
     }
 
+    // nccBUS.restore(listncc.get(index), index);
     public static boolean isPhoneNumber(String str) {
         // Loại bỏ khoảng trắng và dấu ngoặc đơn nếu có
         str = str.replaceAll("\\s+", "").replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\-", "");
@@ -304,4 +354,5 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         listncc = nccBUS.search(txt, type);
         loadDataTable(listncc);
     }
+
 }

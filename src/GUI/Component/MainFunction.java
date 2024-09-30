@@ -1,15 +1,19 @@
 package GUI.Component;
 
-import BUS.NhomQuyenBUS;
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
-import javax.swing.*;
+
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+
+import BUS.NhomQuyenBUS;
 
 public final class MainFunction extends JToolBar {
 
     public ButtonToolBar btnAdd, btnDelete, btnEdit, btnDetail, btnNhapExcel, btnXuatExcel, btnHuyPhieu;
     public JSeparator separator1;
     public HashMap<String, ButtonToolBar> btn = new HashMap<>();
+
     private final NhomQuyenBUS nhomquyenBus = new NhomQuyenBUS();
 
     public MainFunction(int manhomquyen, String chucnang, String[] listBtn) {
@@ -18,7 +22,7 @@ public final class MainFunction extends JToolBar {
     }
 
     public void initData() {
-        btn.put("create", new ButtonToolBar("THÊM", "add.svg", "create"));
+        btn.put("create", new ButtonToolBar("THÊM.", "add.svg", "create"));
         btn.put("delete", new ButtonToolBar("XÓA", "delete.svg", "delete"));
         btn.put("update", new ButtonToolBar("SỬA", "edit.svg", "update"));
         btn.put("cancel", new ButtonToolBar("HUỶ PHIẾU", "cancel.svg", "delete"));
@@ -26,6 +30,7 @@ public final class MainFunction extends JToolBar {
         btn.put("import", new ButtonToolBar("NHẬP EXCEL", "import_excel.svg", "create"));
         btn.put("export", new ButtonToolBar("XUẤT EXCEL", "export_excel.svg", "view"));
         btn.put("phone", new ButtonToolBar("XEM DS", "phone.svg", "view"));
+        btn.put("reset", new ButtonToolBar("DS ngưng hợp tác", "phone.svg", "reset"));
     }
 
     private void initComponent(int manhomquyen, String chucnang, String[] listBtn) {

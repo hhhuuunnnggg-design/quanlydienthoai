@@ -20,6 +20,7 @@ public class DungLuongRamDAO implements DAOinterface<DungLuongRamDTO> {
     public static DungLuongRamDAO getInstance() {
         return new DungLuongRamDAO();
     }
+
     @Override
     public int insert(DungLuongRamDTO t) {
         int result = 0;
@@ -129,5 +130,17 @@ public class DungLuongRamDAO implements DAOinterface<DungLuongRamDTO> {
             Logger.getLogger(DungLuongRamDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<DungLuongRamDTO> getAllStopped() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    }
+
+    @Override
+    public int restore(String t) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'restore'");
     }
 }

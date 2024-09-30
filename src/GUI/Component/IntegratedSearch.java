@@ -1,11 +1,20 @@
 package GUI.Component;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class IntegratedSearch extends JPanel {
 
@@ -19,19 +28,19 @@ public class IntegratedSearch extends JPanel {
         BoxLayout bx = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(bx);
 
-        JPanel jpSearch = new JPanel(new BorderLayout(5,10));
-        jpSearch.setBorder(new EmptyBorder(18,15,18,15));
+        JPanel jpSearch = new JPanel(new BorderLayout(5, 10));
+        jpSearch.setBorder(new EmptyBorder(18, 15, 18, 15));
         jpSearch.setBackground(Color.white);
         cbxChoose = new JComboBox();
         cbxChoose.setModel(new DefaultComboBoxModel<>(str));
         cbxChoose.setPreferredSize(new Dimension(140, 0));
         cbxChoose.setFont(new java.awt.Font(FlatRobotoFont.FAMILY, 0, 13));
         cbxChoose.setFocusable(false);
-        jpSearch.add(cbxChoose,BorderLayout.WEST);
+        jpSearch.add(cbxChoose, BorderLayout.WEST);
 
         txtSearchForm = new JTextField();
         txtSearchForm.setFont(new Font(FlatRobotoFont.FAMILY, 0, 13));
-        txtSearchForm.putClientProperty("JTextField.placeholderText", "Nhập nội dung tìm kiếm...");
+        txtSearchForm.putClientProperty("JTextField.placeholderText", "Nhập nội dung tìm kiếm!");
         txtSearchForm.putClientProperty("JTextField.showClearButton", true);
         jpSearch.add(txtSearchForm);
 
@@ -40,7 +49,7 @@ public class IntegratedSearch extends JPanel {
         btnReset.setIcon(new FlatSVGIcon("./icon/refresh.svg"));
         btnReset.setPreferredSize(new Dimension(125, 0));
         btnReset.addActionListener(this::btnResetActionPerformed);
-        jpSearch.add(btnReset,BorderLayout.EAST);
+        jpSearch.add(btnReset, BorderLayout.EAST);
         this.add(jpSearch);
     }
 

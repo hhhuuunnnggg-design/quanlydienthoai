@@ -1,28 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
+
+import java.util.ArrayList;
 
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
-import java.util.ArrayList;
 
-/**
- *
- * @author Tran Nhat Sinh
- */
 public class NhaCungCapBUS {
 
     private final NhaCungCapDAO NccDAO = new NhaCungCapDAO();
     private ArrayList<NhaCungCapDTO> listNcc = new ArrayList<>();
 
     public NhaCungCapBUS() {
-        this.listNcc = NccDAO.selectAll();
+        this.listNcc = NccDAO.selectAll(); // Chỉ lấy nhà cung cấp hoạt động (trangthai = 1)
     }
 
     public ArrayList<NhaCungCapDTO> getAll() {
-        return this.listNcc;
+        return this.listNcc; // Trả về danh sách nhà cung cấp đang hoạt động
+    }
+
+    public ArrayList<NhaCungCapDTO> getAllstop() {
+        // Trả về danh sách các nhà cung cấp có trangthai = 0
+        return NccDAO.selectAllStop();
+    }
+
+    public ArrayList<NhaCungCapDTO> getAllStopped() {
+        return NccDAO.getAllStopped();
     }
 
     public NhaCungCapDTO getByIndex(int index) {
@@ -39,6 +41,14 @@ public class NhaCungCapBUS {
 
     public boolean delete(NhaCungCapDTO ncc, int index) {
         boolean check = NccDAO.delete(Integer.toString(ncc.getMancc())) != 0;
+        if (check) {
+            this.listNcc.remove(index);
+        }
+        return check;
+    }
+
+    public boolean restore(NhaCungCapDTO kp, int index) {
+        boolean check = NccDAO.restore(Integer.toString(kp.getMancc())) != 0;
         if (check) {
             this.listNcc.remove(index);
         }
@@ -72,7 +82,8 @@ public class NhaCungCapBUS {
         switch (type) {
             case "Tất cả" -> {
                 for (NhaCungCapDTO i : listNcc) {
-                    if (Integer.toString(i.getMancc()).contains(txt) || i.getTenncc().contains(txt) || i.getDiachi().contains(txt) || i.getEmail().contains(txt) || i.getSdt().contains(txt)) {
+                    if (Integer.toString(i.getMancc()).contains(txt) || i.getTenncc().contains(txt)
+                            || i.getDiachi().contains(txt) || i.getEmail().contains(txt) || i.getSdt().contains(txt)) {
                         result.add(i);
                     }
                 }
