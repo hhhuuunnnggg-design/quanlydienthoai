@@ -4,15 +4,6 @@
  */
 package GUI.Dialog;
 
-import BUS.SanPhamBUS;
-import DAO.KhuVucKhoDAO;
-import DTO.KhuVucKhoDTO;
-import DTO.SanPhamDTO;
-import GUI.Component.ButtonCustom;
-import GUI.Component.HeaderTitle;
-import GUI.Component.InputForm;
-import GUI.Panel.KhuVucKho;
-import helper.Validation;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,19 +11,20 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.BoxLayout;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
+
+import DAO.KhuVucKhoDAO;
+import DTO.KhuVucKhoDTO;
+import GUI.Component.ButtonCustom;
+import GUI.Component.HeaderTitle;
+import GUI.Component.InputForm;
+import GUI.Panel.KhuVucKho;
+import helper.Validation;
 
 public final class KhuVucKhoDialog extends JDialog implements ActionListener {
 
@@ -72,7 +64,7 @@ public final class KhuVucKhoDialog extends JDialog implements ActionListener {
         pnbottom = new JPanel(new FlowLayout());
         pnbottom.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnbottom.setBackground(Color.white);
-        btnThem = new ButtonCustom("Thêm khu vực kho", "success", 14);
+        btnThem = new ButtonCustom("Thêm khu vực kho!", "success", 14);
         btnCapNhat = new ButtonCustom("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustom("Huỷ bỏ", "danger", 14);
 

@@ -27,8 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.PlainDocument;
@@ -54,7 +52,6 @@ import GUI.Component.InputImage;
 import GUI.Component.NumericDocumentFilter;
 import GUI.Component.SelectForm;
 import GUI.Panel.SanPham;
-import helper.Formater;
 import helper.Validation;
 
 /**
