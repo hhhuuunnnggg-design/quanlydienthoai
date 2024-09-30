@@ -275,6 +275,7 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
         cbxCauhinh = new SelectForm("Cấu hình", arrCauhinh);
         cbxCauhinh.cbb.addItemListener(this);
         txtDongia = new InputForm("Giá nhập!!");
+        txtDongia.setEditable(false);
         PlainDocument dongia = (PlainDocument) txtDongia.getTxtForm().getDocument();
         dongia.setDocumentFilter((new NumericDocumentFilter()));
         String[] arrPtNhap = { "Nhập theo lô", "Nhập từng máy" };
