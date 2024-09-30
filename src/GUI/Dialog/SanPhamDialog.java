@@ -69,8 +69,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             btnAddSanPham, btnBack, btnViewCauHinh;
     InputForm tenSP, chipxuly, dungluongpin, kichthuocman, thoigianbaohanh, phienbanhdh, camerasau, cameratruoc;
     InputForm txtgianhap, txtgiaxuat, txtgialoinhuan, txtphantramgiamgia;
-    SelectForm cbxRom, cbxRam, cbxMausac, hedieuhanh, xuatxu;
-    SelectForm thuonghieu, khuvuc;
+    SelectForm cbxRom, cbxRam, cbxMausac, hedieuhanh, xuatxu, thuonghieu, khuvuc;
+
     InputImage hinhanh;
     JTable tblcauhinh;
     JScrollPane scrolltblcauhinh;
@@ -149,7 +149,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         phienbanhdh = new InputForm("Phiên bản hđh");
         PlainDocument pbhdh = (PlainDocument) phienbanhdh.getTxtForm().getDocument();
         pbhdh.setDocumentFilter((new NumericDocumentFilter()));
-        thoigianbaohanh = new InputForm("Thời gian bảo hành");
+        thoigianbaohanh = new InputForm("Thời gian bảo hành (tháng)");
         PlainDocument baohanh = (PlainDocument) thoigianbaohanh.getTxtForm().getDocument();
         baohanh.setDocumentFilter((new NumericDocumentFilter()));
         camerasau = new InputForm("Camera sau");
@@ -562,6 +562,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         int pb = Integer.parseInt(phienbanhdh.getText());
         int vthuonghieu = thuonghieuBus.getAll().get(this.thuonghieu.getSelectedIndex()).getMathuonghieu();
         int khuvuckho = kvkhoBus.getAll().get(this.khuvuc.getSelectedIndex()).getMakhuvuc();
+
         SanPhamDTO result = new SanPhamDTO(masp, vtensp, hinhanh, vxuatxu, vchipxuly, vdungluongpin, ktman, hdh, pb,
                 camsau, camtruoc, tgbh, vthuonghieu, khuvuckho, 0);
         return result;
@@ -570,17 +571,17 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     public void setInfo(SanPhamDTO sp) {
         hinhanh.setUrl_img(sp.getHinhanh());
         tenSP.setText(sp.getTensp());
-        xuatxu.setSelectedItem(sp.getXuatxu());
+        xuatxu.setSelectedIndex(xuatXuBUS.getIndexByMaXX(sp.getXuatxu()));
         chipxuly.setText(sp.getChipxuly());
         dungluongpin.setText(Integer.toString(sp.getDungluongpin()));
         kichthuocman.setText(Double.toString(sp.getKichthuocman()));
-        hedieuhanh.setSelectedItem(sp.getHedieuhanh());
+        hedieuhanh.setSelectedIndex(heDieuHanhBUS.getIndexByMaMau(sp.getHedieuhanh()));
         camerasau.setText(sp.getCamerasau());
         cameratruoc.setText(sp.getCameratruoc());
         thoigianbaohanh.setText(Integer.toString(sp.getThoigianbaohanh()));
         phienbanhdh.setText(Integer.toString(sp.getPhienbanhdh()));
         thuonghieu.setSelectedIndex(thuonghieuBus.getIndexByMaLH(sp.getThuonghieu()));
-        khuvuc.setSelectedIndex(jpSP.spBUS.getIndexByMaSP(sp.getKhuvuckho()));
+        khuvuc.setSelectedIndex(kvkhoBus.getIndexByMaKVK(sp.getKhuvuckho()));
     }
 
     public PhienBanSanPhamDTO getCauHinh() {
