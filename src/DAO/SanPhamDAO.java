@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DTO.SanPhamDTO;
+import javax.swing.JOptionPane;
+
+import DTO.SanPhamDTO;
 
 public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
 
@@ -74,21 +77,32 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
         return result;
     }
 
-    @Override
-    public int delete(String t) {
-        int result = 0;
-        try {
-            Connection con = (Connection) JDBCUtil.getConnection();
-            String sql = "UPDATE `sanpham` SET `trangthai`=0 WHERE masp = ?";
-            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
-            pst.setString(1, t);
-            result = pst.executeUpdate();
-            JDBCUtil.closeConnection(con);
-        } catch (SQLException ex) {
-            Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
+   @Override
+public int delete(String t) {
+    int result = 0;
+    try {
+        // Kết nối CSDL
+        Connection con = (Connection) JDBCUtil.getConnection();
+
+        // Kiểm tra số lượng tồn kho của sản phẩm
+        SanPhamDTO sp = this.selectById(t);
+        if (sp != null && sp.getSoluongton() > 0) {
+            // Nếu số lượng tồn kho > 0, hiển thị hộp thoại thông báo không cho phép xóa
+            JOptionPane.showMessageDialog(null, "Không thể xóa sản phẩm vì số lượng tồn kho lớn hơn 0.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return result; // Trả về 0 (không thực hiện xóa)
         }
-        return result;
+
+        // Nếu số lượng tồn kho = 0, tiến hành cập nhật trạng thái xóa
+        String sql = "UPDATE `sanpham` SET `trangthai`=0 WHERE masp = ?";
+        PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+        pst.setString(1, t);
+        result = pst.executeUpdate();
+        JDBCUtil.closeConnection(con);
+    } catch (SQLException ex) {
+        Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return result;
+}
 
     @Override
     public ArrayList<SanPhamDTO> selectAll() {
@@ -114,9 +128,7 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                SanPhamDTO sp = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman,
-                        hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho,
-                        soluongton);
+                SanPhamDTO sp = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
                 result.add(sp);
             }
             JDBCUtil.closeConnection(con);
@@ -150,15 +162,14 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh,
-                        phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
+                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
         }
         return result;
     }
-
+    
     public SanPhamDTO selectByPhienBan(String t) {
         SanPhamDTO result = null;
         try {
@@ -183,8 +194,7 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
                 int thuonghieu = rs.getInt("thuonghieu");
                 int khuvuckho = rs.getInt("khuvuckho");
                 int soluongton = rs.getInt("soluongton");
-                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh,
-                        phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
+                result = new SanPhamDTO(madm, tendm, hinhanh, xuatxu, chipxuly, dungluongpin, kichthuocman, hedieuhanh, phienbanhdh, camerasau, cameratruoc, thoigianbaohanh, thuonghieu, khuvuckho, soluongton);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -215,18 +225,40 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
         return result;
     }
 
+    // public int updateSoLuongTon(int masp, int soluong) {
+    //     int quantity_current = this.selectById(Integer.toString(masp)).getSoluongton();
+    //     int result = 0;
+    //     int quantity_change = quantity_current + soluong;
+    //     try {
+    //         Connection con = (Connection) JDBCUtil.getConnection();
+    //         String sql = "UPDATE `sanpham` SET `soluongton`=? WHERE masp = ?";
+    //         PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+    //         pst.setInt(1, quantity_change);
+    //         pst.setInt(2, masp);
+    //         result = pst.executeUpdate();
+    //         JDBCUtil.closeConnection(con);
+    //     } catch (SQLException ex) {
+    //         Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
+    //     }
+    //     return result;
+    // }
     public int updateSoLuongTon(int masp, int soluong) {
         int quantity_current = this.selectById(Integer.toString(masp)).getSoluongton();
         int result = 0;
         int quantity_change = quantity_current + soluong;
-        try {
-            Connection con = (Connection) JDBCUtil.getConnection();
+    
+        // Kiểm tra nếu số lượng thay đổi không hợp lệ
+        if (quantity_change < 0) {
+            throw new IllegalArgumentException("Số lượng tồn không thể âm.");
+        }
+    
+        try (Connection con = JDBCUtil.getConnection()) { // Sử dụng try-with-resources để tự động đóng kết nối
             String sql = "UPDATE `sanpham` SET `soluongton`=? WHERE masp = ?";
-            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
-            pst.setInt(1, quantity_change);
-            pst.setInt(2, masp);
-            result = pst.executeUpdate();
-            JDBCUtil.closeConnection(con);
+            try (PreparedStatement pst = con.prepareStatement(sql)) {
+                pst.setInt(1, quantity_change);
+                pst.setInt(2, masp);
+                result = pst.executeUpdate();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(SanPhamDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -234,14 +266,13 @@ public class SanPhamDAO implements DAOinterface<SanPhamDTO> {
     }
 
     @Override
-    public ArrayList<SanPhamDTO> getAllStopped() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllStopped'");
+    public int restore(String t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public int restore(String t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'restore'");
+    public ArrayList<SanPhamDTO> getAllStopped() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
 }
