@@ -1,43 +1,54 @@
 package GUI.Panel;
 
-import GUI.Dialog.NhaCungCapDialog;
-import BUS.NhaCungCapBUS;
-import DAO.NhaCungCapDAO;
-import DTO.NhaCungCapDTO;
-import GUI.Component.IntegratedSearch;
-import GUI.Component.MainFunction;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import GUI.Component.PanelBorderRadius;
-import GUI.Main;
-import helper.JTableExporter;
-import helper.Validation;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import BUS.NhaCungCapBUS;
+import DAO.NhaCungCapDAO;
+import DTO.NhaCungCapDTO;
+import GUI.Main;
+import GUI.Component.IntegratedSearch;
+import GUI.Component.MainFunction;
+import GUI.Component.PanelBorderRadius;
+import GUI.Dialog.NhaCungCapDialog;
+import helper.JTableExporter;
+import helper.Validation;
 
 public final class NhaCungCap extends JPanel implements ActionListener, ItemListener {
 
@@ -55,11 +66,11 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
     public ArrayList<NhaCungCapDTO> listncc = nccBUS.getAll();
 
     private void initComponent() {
-        //Set model table
+        // Set model table
         tableNhaCungCap = new JTable();
         scrollTableSanPham = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã NCC", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại"};
+        String[] header = new String[] { "Mã NCC", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại..." };
         tblModel.setColumnIdentifiers(header);
         tableNhaCungCap.setModel(tblModel);
         tableNhaCungCap.setFocusable(false);
@@ -76,7 +87,8 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
 
-        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở giữa mà contentCenter không bị dính sát vào các thành phần khác
+        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở
+        // giữa mà contentCenter không bị dính sát vào các thành phần khác
         pnlBorder1 = new JPanel();
         pnlBorder1.setPreferredSize(new Dimension(0, 10));
         pnlBorder1.setBackground(BackgroundColor);
@@ -103,20 +115,22 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter, BorderLayout.CENTER);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm kiếm
+        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
+        // kiếm
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = {"create", "update", "delete", "detail", "import", "export"};
+        String[] action = { "create", "update", "delete", "detail", "import", "export" };
         mainFunction = new MainFunction(m.user.getManhomquyen(), "nhacungcap", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
         }
         functionBar.add(mainFunction);
 
-        search = new IntegratedSearch(new String[]{"Tất cả", "Mã nhà cung cấp", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại"});
+        search = new IntegratedSearch(
+                new String[] { "Tất cả", "Mã nhà cung cấp", "Tên nhà cung cấp", "Địa chỉ", "Email", "Số điện thoại" });
         search.cbxChoose.addItemListener(this);
         search.txtSearchForm.addKeyListener(new KeyAdapter() {
             @Override
@@ -135,7 +149,7 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         main = new PanelBorderRadius();
         BoxLayout boxly = new BoxLayout(main, BoxLayout.Y_AXIS);
         main.setLayout(boxly);
-//        main.setBorder(new EmptyBorder(20, 20, 20, 20));
+        // main.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentCenter.add(main, BorderLayout.CENTER);
         main.add(scrollTableSanPham);
     }
@@ -150,8 +164,8 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
     public void loadDataTable(ArrayList<NhaCungCapDTO> result) {
         tblModel.setRowCount(0);
         for (NhaCungCapDTO ncc : result) {
-            tblModel.addRow(new Object[]{
-                ncc.getMancc(), ncc.getTenncc(), ncc.getDiachi(), ncc.getEmail(), ncc.getSdt()
+            tblModel.addRow(new Object[] {
+                    ncc.getMancc(), ncc.getTenncc(), ncc.getDiachi(), ncc.getEmail(), ncc.getSdt()
             });
         }
     }
@@ -232,7 +246,8 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                NhaCungCapDialog nccDialog = new NhaCungCapDialog(this, owner, "Chỉnh sửa nhà cung cấp", true, "update", listncc.get(index));
+                NhaCungCapDialog nccDialog = new NhaCungCapDialog(this, owner, "Chỉnh sửa nhà cung cấp", true, "update",
+                        listncc.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("delete")) {
             int index = getRowSelected();
@@ -248,7 +263,8 @@ public final class NhaCungCap extends JPanel implements ActionListener, ItemList
         } else if (e.getSource() == mainFunction.btn.get("detail")) {
             int index = getRowSelected();
             if (index != -1) {
-                NhaCungCapDialog nccDialog = new NhaCungCapDialog(this, owner, "Chi tiết nhà cung cấp", true, "view", listncc.get(index));
+                NhaCungCapDialog nccDialog = new NhaCungCapDialog(this, owner, "Chi tiết nhà cung cấp", true, "view",
+                        listncc.get(index));
             }
         } else if (e.getSource() == search.btnReset) {
             search.txtSearchForm.setText("");

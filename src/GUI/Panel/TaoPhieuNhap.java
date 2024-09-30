@@ -25,11 +25,13 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -58,6 +60,7 @@ import BUS.PhieuNhapBUS;
 import BUS.SanPhamBUS;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.ChiTietSanPhamDTO;
+import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
 import DTO.PhienBanSanPhamDTO;
 import DTO.PhieuNhapDTO;
@@ -68,20 +71,21 @@ import GUI.Component.InputForm;
 import GUI.Component.NumericDocumentFilter;
 import GUI.Component.PanelBorderRadius;
 import GUI.Component.SelectForm;
+import GUI.Dialog.NhaCungCapDialog;
 import GUI.Dialog.QRCode_Dialog;
 import helper.Formater;
 import helper.Validation;
 
 public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionListener {
-
+    // JButton bt_them_ncc;
     PanelBorderRadius right, left;
     JPanel pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4, contentCenter, left_top, main, content_right_bottom,
             content_btn;
     JTable tablePhieuNhap, tableSanPham;
     JScrollPane scrollTablePhieuNhap, scrollTableSanPham;
     DefaultTableModel tblModel, tblModelSP;
-    ButtonCustom btnAddSp, btnEditSP, btnDelete, btnImport, btnNhapHang;
-    InputForm txtMaphieu, txtNhanVien, txtMaSp, txtTenSp, txtDongia, txtMaImeiTheoLo, txtSoLuongImei;
+    ButtonCustom btnAddSp, btnEditSP, btnDelete, btnImport, btnNhapHang, bt_them_ncc;
+    InputForm txtMaphieu, txtNhanVien, txtMaSp, txtTenSp, txtDongia, txtMaImeiTheoLo, txtSoLuongImei, txt_test;
     SelectForm cbxNhaCungCap, cbxCauhinh, cbxPtNhap;
     JTextField txtTimKiem;
     JLabel labelImei, lbltongtien;
@@ -89,7 +93,8 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
     Main m;
     Color BackgroundColor = new Color(240, 247, 250);
     JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
-
+    JRadioButton leftRadio, rightRadio;
+    JPanel messageButton;
     SanPhamBUS spBUS = new SanPhamBUS();
     NhaCungCapBUS nccBus = new NhaCungCapBUS();
     PhienBanSanPhamBUS phienbanBus = new PhienBanSanPhamBUS();
@@ -98,6 +103,9 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
     PhieuNhapBUS phieunhapBus = new PhieuNhapBUS();
     MauSacBUS mausacBus = new MauSacBUS();
     NhanVienDTO nvDto;
+    public NhaCungCapBUS nccBUS = new NhaCungCapBUS();
+    public ArrayList<NhaCungCapDTO> listncc = nccBUS.getAll();
+    // public NhaCungCap sss=new NhaCungCap(m)
 
     ArrayList<DTO.SanPhamDTO> listSP = spBUS.getAll();
     ArrayList<PhienBanSanPhamDTO> ch = new ArrayList<>();
@@ -374,19 +382,47 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
         right.setLayout(new BorderLayout());
 
         JPanel right_top, right_center, right_bottom, pn_tongtien;
-        right_top = new JPanel(new GridLayout(4, 1, 0, 0));
+        right_top = new JPanel(new GridLayout(5, 1, 0, 0));
         right_top.setPreferredSize(new Dimension(300, 360));
         right_top.setOpaque(false);
         txtMaphieu = new InputForm("Mã phiếu nhập");
         txtMaphieu.setText("PN" + maphieunhap);
         txtMaphieu.setEditable(false);
-        txtNhanVien = new InputForm("Nhân viên nhập");
+        txtNhanVien = new InputForm("Nhân viên nhập!");
         txtNhanVien.setText(nvDto.getHoten());
         txtNhanVien.setEditable(false);
-        cbxNhaCungCap = new SelectForm("Nhà cung cấp", nccBus.getArrTenNhaCungCap());
+
+        // nhà cung cấp cũ và nhà cung cấp mới
+        // Tạo một JPanel để chứa JRadioButton
+        JPanel radioPanel = new JPanel();
+        radioPanel.setOpaque(false);
+        radioPanel.setLayout(new GridLayout(1, 2, 5, 5));
+
+        leftRadio = new JRadioButton("Nhà cung cấp cũ");
+        rightRadio = new JRadioButton("Nhà cung cấp mới");
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(leftRadio);
+        group.add(rightRadio);
+
+        radioPanel.add(leftRadio);
+        radioPanel.add(rightRadio);
+
+        right_top.add(radioPanel);
+        leftRadio.addActionListener(this);
+        rightRadio.addActionListener(this);
+
+        bt_them_ncc = new ButtonCustom("Thêm nhà cung cấp!", "success", 14);
+        bt_them_ncc.addActionListener(this);
+        bt_them_ncc.setVisible(false);
+
+        cbxNhaCungCap = new SelectForm("Nhà cung cấp.", nccBus.getArrTenNhaCungCap());
+        cbxNhaCungCap.setVisible(false);
         right_top.add(txtMaphieu);
         right_top.add(txtNhanVien);
+        right_top.add(radioPanel);
         right_top.add(cbxNhaCungCap);
+        right_top.add(bt_them_ncc);
 
         right_center = new JPanel();
         right_center.setPreferredSize(new Dimension(100, 100));
@@ -691,7 +727,6 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
             if (checkImeiExists()) {
                 addCtPhieu();
             }
-
         } else if (source == btnDelete) {
             int index = tablePhieuNhap.getSelectedRow();
             chitietphieu.remove(index);
@@ -722,6 +757,24 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
             }
         } else if (source == btnImport) {
             JOptionPane.showMessageDialog(this, "Chức năng không khả dụng !", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        } else if (e.getSource() == leftRadio) {
+            System.out.println("dan da click ben trai");
+            cbxNhaCungCap.setVisible(true); // Hiển thị combobox nhà cung cấp cũ
+            bt_them_ncc.setVisible(false);
+            // right_top.revalidate(); // Làm mới giao diện để thay đổi hiển thị ngay lập
+            // tức
+            // right_top.repaint();
+        } else if (e.getSource() == rightRadio) {
+            System.out.println("ban da click nut ben phai");
+            cbxNhaCungCap.setVisible(false);
+            bt_them_ncc.setVisible(true);
+
+        } else if (source == bt_them_ncc) {
+            NhaCungCap jpNcc = new NhaCungCap(m);
+            NhaCungCapDialog dvtDialog = new NhaCungCapDialog(jpNcc, owner, "Thêm nhà cung cấp", true, "create");
+            // NhaCungCapDialog dvtDialog = new NhaCungCapDialog(this, owner, "Thêm nhà cung
+            // cấp", true, "create");
+            System.out.println("ban da vao thêm nhà cung cấp");
         }
     }
 
@@ -786,4 +839,5 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
             }
         }
     }
+
 }

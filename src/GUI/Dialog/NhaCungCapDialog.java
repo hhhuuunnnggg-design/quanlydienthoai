@@ -48,7 +48,8 @@ public class NhaCungCapDialog extends JDialog implements ActionListener {
         initComponents(title, type);
     }
 
-    public NhaCungCapDialog(NhaCungCap jpNcc, JFrame owner, String title, boolean modal, String type, NhaCungCapDTO nccdto) {
+    public NhaCungCapDialog(NhaCungCap jpNcc, JFrame owner, String title, boolean modal, String type,
+            NhaCungCapDTO nccdto) {
         super(owner, title, modal);
         this.jpNcc = jpNcc;
         this.nccDTO = nccdto;
@@ -65,7 +66,7 @@ public class NhaCungCapDialog extends JDialog implements ActionListener {
         diachi = new InputForm("Địa chỉ");
         email = new InputForm("Email");
         sodienthoai = new InputForm("Số điện thoại");
-        PlainDocument phonex = (PlainDocument)sodienthoai.getTxtForm().getDocument();
+        PlainDocument phonex = (PlainDocument) sodienthoai.getTxtForm().getDocument();
         phonex.setDocumentFilter((new NumericDocumentFilter()));
 
         pnmain.add(tenNcc);
@@ -80,7 +81,7 @@ public class NhaCungCapDialog extends JDialog implements ActionListener {
         btnCapNhat = new ButtonCustom("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustom("Huỷ bỏ", "danger", 14);
 
-        //Add MouseListener btn
+        // Add MouseListener btn
         btnThem.addActionListener(this);
         btnCapNhat.addActionListener(this);
         btnHuyBo.addActionListener(this);
@@ -121,38 +122,42 @@ public class NhaCungCapDialog extends JDialog implements ActionListener {
         sodienthoai.setEditable(false);
 
     }
-    public boolean Validation(){
-         if (Validation.isEmpty(tenNcc.getText())) {
-            JOptionPane.showMessageDialog(this, "Tên nhà cung cấp không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+
+    public boolean Validation() {
+        if (Validation.isEmpty(tenNcc.getText())) {
+            JOptionPane.showMessageDialog(this, "Tên nhà cung cấp không được rỗng", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-         else  if (Validation.isEmpty(diachi.getText())) {
+        } else if (Validation.isEmpty(diachi.getText())) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-         else if (Validation.isEmpty(email.getText()) || !Validation.isEmail(email.getText())) {
-            JOptionPane.showMessageDialog(this, "Email không được rỗng và phải đúng cú pháp", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+        } else if (Validation.isEmpty(email.getText()) || !Validation.isEmail(email.getText())) {
+            JOptionPane.showMessageDialog(this, "Email không được rỗng và phải đúng cú pháp", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-         else if (Validation.isEmpty(sodienthoai.getText()) || !Validation.isNumber(sodienthoai.getText()) && sodienthoai.getText().length()!=10) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+        } else if (Validation.isEmpty(sodienthoai.getText())
+                || !Validation.isNumber(sodienthoai.getText()) && sodienthoai.getText().length() != 10) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !",
+                    JOptionPane.WARNING_MESSAGE);
             return false;
-         }
-          return true;
+        }
+        return true;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnThem && Validation()) {
-            int mancc = NhaCungCapDAO.getInstance().getAutoIncrement();  
-            jpNcc.nccBUS.add(new NhaCungCapDTO(mancc, tenNcc.getText(), diachi.getText(), email.getText(), sodienthoai.getText()));
+            int mancc = NhaCungCapDAO.getInstance().getAutoIncrement();
+            jpNcc.nccBUS.add(new NhaCungCapDTO(mancc, tenNcc.getText(), diachi.getText(), email.getText(),
+                    sodienthoai.getText()));
             jpNcc.loadDataTable(jpNcc.listncc);
             dispose();
 
         } else if (e.getSource() == btnHuyBo) {
             dispose();
         } else if (e.getSource() == btnCapNhat && Validation()) {
-            jpNcc.nccBUS.update(new NhaCungCapDTO(nccDTO.getMancc(), tenNcc.getText(), diachi.getText(), email.getText(), sodienthoai.getText()));
+            jpNcc.nccBUS.update(new NhaCungCapDTO(nccDTO.getMancc(), tenNcc.getText(), diachi.getText(),
+                    email.getText(), sodienthoai.getText()));
             jpNcc.loadDataTable(jpNcc.listncc);
             dispose();
         }
