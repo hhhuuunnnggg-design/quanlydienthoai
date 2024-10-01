@@ -67,6 +67,41 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
         return result;
     }
 
+    public void updateAverageCost(int maphienbansp) {
+        String avgCostQuery = "SELECT AVG(ctn.dongia) AS gia_nhap_trung_binh " +
+                "FROM ctsanpham cts " +
+                "JOIN ctphieunhap ctn ON cts.maphieunhap = ctn.maphieunhap " +
+                "WHERE cts.tinhtrang = 1 AND cts.maphienbansp = ?";
+
+        String updateQuery = "UPDATE phienbansanpham SET gianhap = ? WHERE maphienbansp = ?";
+
+        try (Connection conn = (Connection) JDBCUtil.getConnection();
+                PreparedStatement avgStmt = conn.prepareStatement(avgCostQuery);
+                PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+
+            // Tính toán giá trung bình
+            avgStmt.setInt(1, maphienbansp);
+            ResultSet rs = avgStmt.executeQuery();
+
+            if (rs.next()) {
+                double newAvg = rs.getDouble("gia_nhap_trung_binh");
+
+                int roundedAvg = (int) Math.round(newAvg);
+
+                updateStmt.setInt(1, roundedAvg);
+                updateStmt.setInt(2, maphienbansp);
+                updateStmt.executeUpdate();
+
+                System.out.println("Cập nhật giá trung bình tồn kho thành công cho sản phẩm: " + maphienbansp);
+            } else {
+                System.out.println("Không tìm thấy sản phẩm với mã: " + maphienbansp);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public int delete(String t) {
         int result = 0;
@@ -85,7 +120,8 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
 
     @Override
     public int update(ArrayList<PhienBanSanPhamDTO> t, String pk) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                       // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public int update(PhienBanSanPhamDTO ch) {
@@ -127,7 +163,8 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
                 int gianhap = rs.getInt("gianhap");
                 int giaxuat = rs.getInt("giaxuat");
                 int soluongton = rs.getInt("soluongton");
-                PhienBanSanPhamDTO ch = new PhienBanSanPhamDTO(maphienbansp, masp, ram, rom, mausac, gianhap, giaxuat, soluongton);
+                PhienBanSanPhamDTO ch = new PhienBanSanPhamDTO(maphienbansp, masp, ram, rom, mausac, gianhap, giaxuat,
+                        soluongton);
                 result.add(ch);
             }
             JDBCUtil.closeConnection(con);
@@ -135,8 +172,8 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
         }
         return result;
     }
-    
-     public ArrayList<PhienBanSanPhamDTO> selectAllpb(String t) {
+
+    public ArrayList<PhienBanSanPhamDTO> selectAllpb(String t) {
         ArrayList<PhienBanSanPhamDTO> result = new ArrayList<>();
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
@@ -153,7 +190,8 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
                 int gianhap = rs.getInt("gianhap");
                 int giaxuat = rs.getInt("giaxuat");
                 int soluongton = rs.getInt("soluongton");
-                PhienBanSanPhamDTO ch = new PhienBanSanPhamDTO(maphienbansp, masp, ram, rom, mausac, gianhap, giaxuat, soluongton);
+                PhienBanSanPhamDTO ch = new PhienBanSanPhamDTO(maphienbansp, masp, ram, rom, mausac, gianhap, giaxuat,
+                        soluongton);
                 result.add(ch);
             }
             JDBCUtil.closeConnection(con);
@@ -186,8 +224,8 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
         }
         return ch;
     }
-    
-    public boolean checkImeiExists(ArrayList<ChiTietSanPhamDTO> arr){
+
+    public boolean checkImeiExists(ArrayList<ChiTietSanPhamDTO> arr) {
         for (ChiTietSanPhamDTO chiTietSanPhamDTO : arr) {
             try {
                 Connection con = (Connection) JDBCUtil.getConnection();
@@ -205,7 +243,6 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
         Connection con = (Connection) JDBCUtil.getConnection();
         return true;
     }
-    
 
     public int getAutoIncrement() {
         int result = -1;
@@ -232,7 +269,7 @@ public class PhienBanSanPhamDAO implements ChiTietInterface<PhienBanSanPhamDTO> 
         PhienBanSanPhamDTO pbsp = this.selectById(maphienban);
         int result = 0;
         int quantity_change = pbsp.getSoluongton() + soluong;
-        System.out.println("Update:"+quantity_change);
+        System.out.println("Update:" + quantity_change);
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
             String sql = "UPDATE `phienbansanpham` SET `soluongton`=? WHERE maphienbansp = ?";

@@ -1,11 +1,51 @@
 package GUI.Panel;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.text.PlainDocument;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+
 import BUS.ChiTietSanPhamBUS;
-import BUS.PhienBanSanPhamBUS;
 import BUS.DungLuongRamBUS;
 import BUS.DungLuongRomBUS;
 import BUS.KhachHangBUS;
 import BUS.MauSacBUS;
+import BUS.PhienBanSanPhamBUS;
 import BUS.PhieuXuatBUS;
 import BUS.SanPhamBUS;
 import DAO.ChiTietSanPhamDAO;
@@ -20,41 +60,18 @@ import DTO.PhienBanSanPhamDTO;
 import DTO.PhieuXuatDTO;
 import DTO.SanPhamDTO;
 import DTO.TaiKhoanDTO;
+import GUI.Main;
 import GUI.Component.ButtonCustom;
 import GUI.Component.CustomComboCheck;
 import GUI.Component.InputForm;
 import GUI.Component.Notification;
 import GUI.Component.NumericDocumentFilter;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import GUI.Component.PanelBorderRadius;
 import GUI.Component.SelectForm;
 import GUI.Dialog.ListKhachHang;
 import GUI.Dialog.QRCode_Dialog;
 import GUI.Dialog.SelectImei;
-import GUI.Main;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import helper.Formater;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Vector;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicMenuUI;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import javax.swing.text.PlainDocument;
 
 public final class TaoPhieuXuat extends JPanel {
 
@@ -69,7 +86,7 @@ public final class TaoPhieuXuat extends JPanel {
     JScrollPane scrollTablePhieuNhap, scrollTableSanPham;
     DefaultTableModel tblModel, tblModelSP;
     ButtonCustom btnAddSp, btnEditSP, btnDelete, btnImport, btnXuatHang;
-    InputForm txtMaphieu, txtNhanVien, txtMaSp, txtTenSp, txtSoluongTon,tenKH,sdtKH,diachiKH;
+    InputForm txtMaphieu, txtNhanVien, txtMaSp, txtTenSp, txtSoluongTon, tenKH, sdtKH, diachiKH;
     SelectForm cbxPhienBan;
     JTextField txtTimKiem;
     Color BackgroundColor = new Color(240, 247, 250);
@@ -145,7 +162,8 @@ public final class TaoPhieuXuat extends JPanel {
         tablePhieuXuat = new JTable();
         scrollTablePhieuNhap = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"STT", "Mã SP", "Tên sản phẩm", "RAM", "ROM", "Màu sắc", "Đơn giá", "Số lượng"};
+        String[] header = new String[] { "STT", "Mã SP", "Tên sản phẩm", "RAM", "ROM", "Màu sắc", "Đơn giá",
+                "Số lượng" };
         tblModel.setColumnIdentifiers(header);
         tablePhieuXuat.setModel(tblModel);
         scrollTablePhieuNhap.setViewportView(tablePhieuXuat);
@@ -165,7 +183,7 @@ public final class TaoPhieuXuat extends JPanel {
         tableSanPham = new JTable();
         scrollTableSanPham = new JScrollPane();
         tblModelSP = new DefaultTableModel();
-        String[] headerSP = new String[]{"Mã SP", "Tên sản phẩm", "Số lượng tồn"};
+        String[] headerSP = new String[] { "Mã SP", "Tên sản phẩm", "Số lượng tồn" };
         tblModelSP.setColumnIdentifiers(headerSP);
         tableSanPham.setModel(tblModelSP);
         scrollTableSanPham.setViewportView(tableSanPham);
@@ -226,7 +244,7 @@ public final class TaoPhieuXuat extends JPanel {
         txtMaSp.setEditable(false);
         txtTenSp = new InputForm("Tên sản phẩm");
         txtTenSp.setEditable(false);
-        String[] arrCauhinh = {"Chọn sản phẩm"};
+        String[] arrCauhinh = { "Chọn sản phẩm" };
         JPanel panlePXGX = new JPanel(new GridLayout(1, 3));
         panlePXGX.setPreferredSize(new Dimension(100, 90));
         cbxPhienBan = new SelectForm("Cấu hình", arrCauhinh);
@@ -357,7 +375,8 @@ public final class TaoPhieuXuat extends JPanel {
         btnAddSp.addActionListener((ActionEvent e) -> {
             if (checkInfo()) {
                 getInfo();
-                Notification notification = new Notification(mainChinh, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Thêm sản phẩm thành công!");
+                Notification notification = new Notification(mainChinh, Notification.Type.SUCCESS,
+                        Notification.Location.TOP_CENTER, "Thêm sản phẩm thành công!");
                 notification.showNotification();
                 loadDataTableChiTietPhieu(chitietphieu);
                 actionbtn("update");
@@ -385,7 +404,7 @@ public final class TaoPhieuXuat extends JPanel {
                 }
             }
         });
-        
+
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -444,7 +463,7 @@ public final class TaoPhieuXuat extends JPanel {
         txtNhanVien.setText(nhanvien.getHoten());
         right_top.add(txtMaphieu);
         right_top.add(txtNhanVien);
-        
+
         ButtonGroup khCuHoacMoi = new ButtonGroup();
         JRadioButton khCuRad = new JRadioButton("Khách hàng cũ");
         JRadioButton khMoiRad = new JRadioButton("Khách hàng mới");
@@ -453,7 +472,7 @@ public final class TaoPhieuXuat extends JPanel {
         khCuRad.setSelected(true);
         khCuRad.setOpaque(false);
         khMoiRad.setOpaque(false);
-        JPanel khRadJPanel = new JPanel(new GridLayout(1,2,0,0));
+        JPanel khRadJPanel = new JPanel(new GridLayout(1, 2, 0, 0));
         khRadJPanel.setPreferredSize(new Dimension(0, 40));
         khRadJPanel.setBackground(Color.WHITE);
         khRadJPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
@@ -462,7 +481,7 @@ public final class TaoPhieuXuat extends JPanel {
         right_top.add(khRadJPanel);
         right_center = new JPanel(new BorderLayout());
         right_center.setOpaque(false);
-        
+
         JPanel khachJPanel = new JPanel(new BorderLayout());
         khachJPanel.setPreferredSize(new Dimension(0, 40));
         khachJPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
@@ -473,44 +492,41 @@ public final class TaoPhieuXuat extends JPanel {
         ButtonCustom btnKh = new ButtonCustom("Chọn khách hàng", "success", 14);
         kJPanelLeft.add(btnKh);
         btnKh.addActionListener((ActionEvent e) -> {
-                    ListKhachHang listkh = new ListKhachHang(TaoPhieuXuat.this, owner, "Chọn khách hàng", true);
-                    });
-         txtKh = new JTextField("");
-         txtKh.setEditable(false);
-         khachJPanel.add(kJPanelLeft, BorderLayout.EAST);
-         khachJPanel.add(txtKh, BorderLayout.CENTER);
+            ListKhachHang listkh = new ListKhachHang(TaoPhieuXuat.this, owner, "Chọn khách hàng", true);
+        });
+        txtKh = new JTextField("");
+        txtKh.setEditable(false);
+        khachJPanel.add(kJPanelLeft, BorderLayout.EAST);
+        khachJPanel.add(txtKh, BorderLayout.CENTER);
 
-         JPanel khPanel = new JPanel(new GridLayout(2, 1, 5, 0));
-         khPanel.setBackground(Color.WHITE);
-         khPanel.setPreferredSize(new Dimension(0, 80));
-         JLabel khachKhangJLabel = new JLabel("Khách hàng");
-         khachKhangJLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
-         khPanel.add(khachKhangJLabel);
-         khPanel.add(khachJPanel);
-         right_center.add(khPanel, BorderLayout.NORTH);
-                    
-         JPanel newKHPanel = new JPanel(new GridLayout(3,1));
-         newKHPanel.setOpaque(false);
-         tenKH = new InputForm("Tên khách hàng");
-         sdtKH = new InputForm("Số điện thoại");
-         diachiKH = new InputForm("Địa chỉ");
-         PlainDocument phonex = (PlainDocument)sdtKH.getTxtForm().getDocument();
+        JPanel khPanel = new JPanel(new GridLayout(2, 1, 5, 0));
+        khPanel.setBackground(Color.WHITE);
+        khPanel.setPreferredSize(new Dimension(0, 80));
+        JLabel khachKhangJLabel = new JLabel("Khách hàng");
+        khachKhangJLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
+        khPanel.add(khachKhangJLabel);
+        khPanel.add(khachJPanel);
+        right_center.add(khPanel, BorderLayout.NORTH);
+
+        JPanel newKHPanel = new JPanel(new GridLayout(3, 1));
+        newKHPanel.setOpaque(false);
+        tenKH = new InputForm("Tên khách hàng");
+        sdtKH = new InputForm("Số điện thoại");
+        diachiKH = new InputForm("Địa chỉ");
+        PlainDocument phonex = (PlainDocument) sdtKH.getTxtForm().getDocument();
         phonex.setDocumentFilter((new NumericDocumentFilter()));
-         newKHPanel.add(tenKH);
-         newKHPanel.add(sdtKH);
-         newKHPanel.add(diachiKH);
-         
-        
-        khCuRad.addActionListener(new ActionListener()
-        {
+        newKHPanel.add(tenKH);
+        newKHPanel.add(sdtKH);
+        newKHPanel.add(diachiKH);
+
+        khCuRad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 khPanel.setVisible(true);
                 newKHPanel.setVisible(false);
             }
         });
-        khMoiRad.addActionListener(new ActionListener()
-        {
+        khMoiRad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 khPanel.setVisible(false);
@@ -518,10 +534,6 @@ public final class TaoPhieuXuat extends JPanel {
                 newKHPanel.setVisible(true);
             }
         });
-        
-        
-        
-
 
         right_bottom = new JPanel(new GridLayout(2, 1));
         right_bottom.setPreferredSize(new Dimension(300, 100));
@@ -552,8 +564,6 @@ public final class TaoPhieuXuat extends JPanel {
                 }
             }
         });
-        
-        
 
         tablePhieuXuat.addMouseListener(new MouseAdapter() {
             @Override
@@ -575,14 +585,15 @@ public final class TaoPhieuXuat extends JPanel {
         }
 
         btnXuatHang.addActionListener((ActionEvent e) -> {
-            
-            if(khCuRad.isSelected()){
+
+            if (khCuRad.isSelected()) {
                 if (chitietphieu.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm");
                 } else if (makh == -1) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng");
                 } else {
-                    int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn tạo phiếu xuất !", "Xác nhận tạo phiếu", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn tạo phiếu xuất !",
+                            "Xác nhận tạo phiếu", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (input == 0) {
                         long now = System.currentTimeMillis();
                         Timestamp currenTime = new Timestamp(now);
@@ -590,24 +601,26 @@ public final class TaoPhieuXuat extends JPanel {
                         phieuXuatBUS.insert(phieuXuat, chitietphieu);
                         chiTietSanPhamBUS.updateXuat(chitietsanpham);
                         JOptionPane.showMessageDialog(null, "Xuất hàng thành công !");
+                        for (ChiTietPhieuDTO ct : chitietphieu) {
+                            phienBanBus.updateAverageCost(ct.getMaphienbansp());
+                        }
                         mainChinh.setPanel(new PhieuXuat(mainChinh, tk));
                     }
                 }
-            }
-            else if(khMoiRad.isSelected()){
+            } else if (khMoiRad.isSelected()) {
                 if (chitietphieu.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm");
-                }
-                else {
-                    int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn tạo phiếu xuất !", "Xác nhận tạo phiếu", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn tạo phiếu xuất !",
+                            "Xác nhận tạo phiếu", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (input == 0) {
                         long now = System.currentTimeMillis();
                         Timestamp currenTime = new Timestamp(now);
-                        
-                        int id=KhachHangDAO.getInstance().getAutoIncrement();
-                        KhachHangDTO khMoi = new KhachHangDTO(id,tenKH.getText(),sdtKH.getText(),diachiKH.getText());
+
+                        int id = KhachHangDAO.getInstance().getAutoIncrement();
+                        KhachHangDTO khMoi = new KhachHangDTO(id, tenKH.getText(), sdtKH.getText(), diachiKH.getText());
                         khachHangBUS.add(khMoi);
-                        
+
                         PhieuXuatDTO phieuXuat = new PhieuXuatDTO(id, maphieu, tk.getManv(), currenTime, sum, 1);
                         phieuXuatBUS.insert(phieuXuat, chitietphieu);
                         chiTietSanPhamBUS.updateXuat(chitietsanpham);
@@ -616,7 +629,7 @@ public final class TaoPhieuXuat extends JPanel {
                     }
                 }
             }
-                
+
         });
 
         btnQuayLai.addActionListener((ActionEvent e) -> {
@@ -636,7 +649,7 @@ public final class TaoPhieuXuat extends JPanel {
     public void loadDataTalbeSanPham(ArrayList<DTO.SanPhamDTO> result) {
         tblModelSP.setRowCount(0);
         for (DTO.SanPhamDTO sp : result) {
-            tblModelSP.addRow(new Object[]{sp.getMasp(), sp.getTensp(), sp.getSoluongton()});
+            tblModelSP.addRow(new Object[] { sp.getMasp(), sp.getTensp(), sp.getSoluongton() });
         }
     }
 
@@ -649,7 +662,8 @@ public final class TaoPhieuXuat extends JPanel {
         String[] arr = new String[size];
         for (int i = 0; i < size; i++) {
             arr[i] = romBus.getKichThuocById(ch.get(i).getRom()) + "GB - "
-                    + ramBus.getKichThuocById(ch.get(i).getRam()) + "GB - " + mausacBus.getTenMau(ch.get(i).getMausac());
+                    + ramBus.getKichThuocById(ch.get(i).getRam()) + "GB - "
+                    + mausacBus.getTenMau(ch.get(i).getMausac());
         }
         this.cbxPhienBan.setArr(arr);
         mapb = ch.get(0).getMaphienbansp();
@@ -715,7 +729,7 @@ public final class TaoPhieuXuat extends JPanel {
         ctpb = ChiTietSanPhamDAO.getInstance().selectAllbyPb(mapb);
         PhienBanSanPhamDTO pbsp = phienBanBus.getByMaPhienBan(mapb);
         txtGiaXuat.setText(pbsp.getGiaxuat() + "");
-        txtSoluongTon.setText(pbsp.getSoluongton()+"");
+        txtSoluongTon.setText(pbsp.getSoluongton() + "");
         textAreaImei.setText("");
         for (int i = 0; i < ctpb.size(); i++) {
             for (ChiTietSanPhamDTO chiTietSanPhamDTO : chitietsanpham) {
@@ -733,10 +747,11 @@ public final class TaoPhieuXuat extends JPanel {
         for (int i = 0; i < size; i++) {
             PhienBanSanPhamDTO phienban = phienBanBus.getByMaPhienBan(ctPhieu.get(i).getMaphienbansp());
             sum += ctPhieu.get(i).getDongia() * ctPhieu.get(i).getSoluong();
-            tblModel.addRow(new Object[]{
-                i + 1, phienban.getMasp(), spBUS.getByMaSP(phienban.getMasp()).getTensp(), ramBus.getKichThuocById(phienban.getRam()) + "GB",
-                romBus.getKichThuocById(phienban.getRom()) + "GB", mausacBus.getTenMau(phienban.getMausac()),
-                Formater.FormatVND(ctPhieu.get(i).getDongia()), ctPhieu.get(i).getSoluong()
+            tblModel.addRow(new Object[] {
+                    i + 1, phienban.getMasp(), spBUS.getByMaSP(phienban.getMasp()).getTensp(),
+                    ramBus.getKichThuocById(phienban.getRam()) + "GB",
+                    romBus.getKichThuocById(phienban.getRom()) + "GB", mausacBus.getTenMau(phienban.getMausac()),
+                    Formater.FormatVND(ctPhieu.get(i).getDongia()), ctPhieu.get(i).getSoluong()
             });
         }
         lbltongtien.setText(Formater.FormatVND(sum));

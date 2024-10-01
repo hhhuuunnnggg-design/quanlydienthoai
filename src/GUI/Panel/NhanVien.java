@@ -33,7 +33,8 @@ public final class NhanVien extends JPanel {
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
 
-        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở giữa mà contentCenter không bị dính sát vào các thành phần khác
+        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở
+        // giữa mà contentCenter không bị dính sát vào các thành phần khác
         pnlBorder1 = new JPanel();
         pnlBorder1.setPreferredSize(new Dimension(0, 10));
         pnlBorder1.setBackground(BackgroundColor);
@@ -60,20 +61,21 @@ public final class NhanVien extends JPanel {
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter, BorderLayout.CENTER);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm kiếm
+        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
+        // kiếm
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
         contentCenter.add(functionBar, BorderLayout.NORTH);
 
-        String[] action = {"create", "update", "delete", "detail", "import", "export"};
+        String[] action = { "create", "update", "delete", "detail", "import", "export" };
         mainFunction = new MainFunction(m.user.getManhomquyen(), "nhanvien", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(nvBus);
         }
         functionBar.add(mainFunction);
-        search = new IntegratedSearch(new String[]{"Tất cả", "Họ tên", "Email"});
+        search = new IntegratedSearch(new String[] { "Tất cả", "Họ tên", "Email" });
         functionBar.add(search);
         search.btnReset.addActionListener(nvBus);
         search.cbxChoose.addActionListener(nvBus);
@@ -83,14 +85,14 @@ public final class NhanVien extends JPanel {
         main = new PanelBorderRadius();
         BoxLayout boxly = new BoxLayout(main, BoxLayout.Y_AXIS);
         main.setLayout(boxly);
-//        main.setBorder(new EmptyBorder(20, 20, 20, 20));
+        // main.setBorder(new EmptyBorder(20, 20, 20, 20));
         contentCenter.add(main, BorderLayout.CENTER);
 
         tableNhanVien = new JTable();
         scrollTableSanPham = new JScrollPane();
         tableNhanVien = new JTable();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"MNV", "Họ tên", "Giới tính", "Ngày Sinh", "SDT", "Email"};
+        String[] header = new String[] { "MNV", "Họ tên", "Giới tính", "Ngày Sinh", "SDT", "Email" };
 
         tblModel.setColumnIdentifiers(header);
         tableNhanVien.setModel(tblModel);
@@ -107,8 +109,6 @@ public final class NhanVien extends JPanel {
         scrollTableSanPham.setViewportView(tableNhanVien);
         main.add(scrollTableSanPham);
     }
-
-    
 
     public NhanVien(Main m) {
         this.m = m;
@@ -129,8 +129,9 @@ public final class NhanVien extends JPanel {
         listnv = list;
         tblModel.setRowCount(0);
         for (DTO.NhanVienDTO nhanVien : listnv) {
-            tblModel.addRow(new Object[]{
-                nhanVien.getManv(), nhanVien.getHoten(), nhanVien.getGioitinh() == 1 ? "Nam" : "Nữ", nhanVien.getNgaysinh(), nhanVien.getSdt(), nhanVien.getEmail()
+            tblModel.addRow(new Object[] {
+                    nhanVien.getManv(), nhanVien.getHoten(), nhanVien.getGioitinh() == 1 ? "Nam" : "Nữ",
+                    nhanVien.getNgaysinh(), nhanVien.getSdt(), nhanVien.getEmail()
             });
         }
     }

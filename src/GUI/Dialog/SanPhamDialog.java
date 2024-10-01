@@ -280,9 +280,11 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         cbxRam = new SelectForm("RAM", ramBus.getArrKichThuoc());
         cbxMausac = new SelectForm("Màu sắc", mausacBus.getArrTenMauSac());
 
-        txtgianhap = new InputForm("Giá nhập trung bình");
+        txtgianhap = new InputForm("Giá nhập tồn kho trung bình");
         PlainDocument nhap = (PlainDocument) txtgianhap.getTxtForm().getDocument();
         nhap.setDocumentFilter((new NumericDocumentFilter()));
+        txtgianhap.setEditable(false);
+
         // Lấy giá nhập trung bình từ cơ sở dữ liệu
         Map<Integer, Double> averagePrices = getAveragePriceByProduct();
         System.out.println("Mã sản phẩm truyền vào: " + masp);
@@ -799,14 +801,34 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     }
 
     // hinhanh
+    // public boolean validateCardOne() {
+    // boolean check = true;
+    // if (Validation.isEmpty(tenSP.getText()) || Validation.isEmpty((String)
+    // xuatxu.getSelectedItem())
+    // || Validation.isEmpty(chipxuly.getText()) ||
+    // Validation.isEmpty(dungluongpin.getText())
+    // || Validation.isEmpty(kichthuocman.getText()) ||
+    // Validation.isEmpty(hedieuhanh.getValue())
+    // || Validation.isEmpty(camerasau.getText()) ||
+    // Validation.isEmpty(cameratruoc.getText())
+    // || Validation.isEmpty(thoigianbaohanh.getText()) ||
+    // Validation.isEmpty(phienbanhdh.getText())
+    // || Validation.isEmpty(hinhanh.getName())) {
+    // check = false;
+    // JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin cấu hình
+    // 1 !");
+    // } else {
+    // // Check number
+    // }
+    // return check;
+    // }
     public boolean validateCardOne() {
         boolean check = true;
         if (Validation.isEmpty(tenSP.getText()) || Validation.isEmpty((String) xuatxu.getSelectedItem())
                 || Validation.isEmpty(chipxuly.getText()) || Validation.isEmpty(dungluongpin.getText())
                 || Validation.isEmpty(kichthuocman.getText()) || Validation.isEmpty(hedieuhanh.getValue())
                 || Validation.isEmpty(camerasau.getText()) || Validation.isEmpty(cameratruoc.getText())
-                || Validation.isEmpty(thoigianbaohanh.getText()) || Validation.isEmpty(phienbanhdh.getText())
-                || Validation.isEmpty(hinhanh.getName())) {
+                || Validation.isEmpty(thoigianbaohanh.getText()) || Validation.isEmpty(phienbanhdh.getText())) {
             check = false;
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin cấu hình 1 !");
         } else {

@@ -274,10 +274,12 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
         content_right_top_cbx.setPreferredSize(new Dimension(100, 180));
         cbxCauhinh = new SelectForm("Cấu hình", arrCauhinh);
         cbxCauhinh.cbb.addItemListener(this);
+
         txtDongia = new InputForm("Giá nhập!!");
-        txtDongia.setEditable(false);
+        txtDongia.setEditable(true);
         PlainDocument dongia = (PlainDocument) txtDongia.getTxtForm().getDocument();
         dongia.setDocumentFilter((new NumericDocumentFilter()));
+
         String[] arrPtNhap = { "Nhập theo lô", "Nhập từng máy" };
         cbxPtNhap = new SelectForm("Phương thức nhập", arrPtNhap);
         cbxPtNhap.cbb.addItemListener(this);
@@ -797,6 +799,9 @@ public final class TaoPhieuNhap extends JPanel implements ItemListener, ActionLi
                 if (result) {
                     JOptionPane.showMessageDialog(this, "Nhập hàng thành công !");
                     PhieuNhap pnlPhieu = new PhieuNhap(m, nvDto);
+                    for (ChiTietPhieuNhapDTO ct : chitietphieu) {
+                        phienbanBus.updateAverageCost(ct.getMaphienbansp());
+                    }
                     m.setPanel(pnlPhieu);
                 } else {
                     JOptionPane.showMessageDialog(this, "Nhập hàng không thành công !", "Cảnh báo !",
