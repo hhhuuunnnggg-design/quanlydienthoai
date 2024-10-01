@@ -1,0 +1,35 @@
+[33m3e42406[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtest[m[33m, [m[1;31morigin/test[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{0}: merge main: Fast-forward
+[33m4deee83[m HEAD@{1}: checkout: moving from main to test
+[33m3e42406[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtest[m[33m, [m[1;31morigin/test[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{2}: pull: Fast-forward
+[33m5ebffb8[m HEAD@{3}: commit: settext của giá nhập
+[33m9f2fbcb[m HEAD@{4}: commit: bỏ xóa phiếu nhập
+[33m5e35944[m HEAD@{5}: commit: fĩ xog sp
+[33m2178b4b[m HEAD@{6}: checkout: moving from test to main
+[33m4deee83[m HEAD@{7}: checkout: moving from main to test
+[33m2178b4b[m HEAD@{8}: commit (merge): .
+[33m0163a75[m HEAD@{9}: checkout: moving from test to main
+[33m4deee83[m HEAD@{10}: commit: đã fix xong phần sản phẩm
+[33ma962c2b[m HEAD@{11}: checkout: moving from main to test
+[33m0163a75[m HEAD@{12}: commit (merge): kéo test về (xog khôi phục nhà cung cấp)
+[33md94f2df[m HEAD@{13}: checkout: moving from test to main
+[33ma962c2b[m HEAD@{14}: commit: hoàn thành khôi phục nhà cung cấp
+[33ma3337f6[m HEAD@{15}: checkout: moving from main to test
+[33md94f2df[m HEAD@{16}: commit (merge): kéo từ test về (thêm ncc từ phiếu nhập và sửa thêm khách hàng từ phiếu xuất)
+[33mb047d81[m HEAD@{17}: checkout: moving from test to main
+[33ma3337f6[m HEAD@{18}: commit: hoành nhà cung cấp cũ-mới và sửa thêm khách hàng ở phiếu xuất
+[33md24c122[m HEAD@{19}: commit: .
+[33ma6ea01d[m HEAD@{20}: checkout: moving from main to test
+[33mb047d81[m HEAD@{21}: checkout: moving from test to main
+[33ma6ea01d[m HEAD@{22}: checkout: moving from main to test
+[33mb047d81[m HEAD@{23}: checkout: moving from test to main
+[33ma6ea01d[m HEAD@{24}: checkout: moving from main to test
+[33mb047d81[m HEAD@{25}: commit (merge): Merge branch 'test'
+[33mc99dfd0[m HEAD@{26}: pull: Fast-forward
+[33m0cf26bf[m HEAD@{27}: checkout: moving from test to main
+[33ma6ea01d[m HEAD@{28}: commit: ..
+[33m67136fa[m HEAD@{29}: commit: .
+[33m0cf26bf[m HEAD@{30}: checkout: moving from main to test
+[33m0cf26bf[m HEAD@{31}: commit: .
+[33me146501[m HEAD@{32}: commit: .
+[33m3f9f67b[m HEAD@{33}: commit: .
+[33m9557868[m HEAD@{34}: clone: from https://github.com/hhhuuunnnggg-design/quanlydienthoai.git
