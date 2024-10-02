@@ -15,13 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
@@ -37,9 +31,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -63,7 +54,6 @@ import GUI.Component.InputImage;
 import GUI.Component.NumericDocumentFilter;
 import GUI.Component.SelectForm;
 import GUI.Panel.SanPham;
-import config.JDBCUtil;
 import helper.Formater;
 import helper.Validation;
 
@@ -72,7 +62,6 @@ import helper.Validation;
  * @author Tran Nhat Sinh
  */
 public final class SanPhamDialog extends JDialog implements ActionListener {
-    private boolean isUpdating = false;
     private JTextFieldDateEditor txtForm;
     private HeaderTitle titlePage;
     private JPanel pninfosanpham, pnbottom, pnCenter, pninfosanphamright, pnmain, pncard2;
@@ -80,8 +69,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             btnAddSanPham, btnBack, btnViewCauHinh;
     InputForm tenSP, chipxuly, dungluongpin, kichthuocman, thoigianbaohanh, phienbanhdh, camerasau, cameratruoc;
     InputForm txtgianhap, txtgiaxuat, txtgialoinhuan, txtphantramgiamgia;
-    SelectForm cbxRom, cbxRam, cbxMausac, hedieuhanh, xuatxu;
-    SelectForm thuonghieu, khuvuc;
+    SelectForm cbxRom, cbxRam, cbxMausac, hedieuhanh, xuatxu, thuonghieu, khuvuc;
+
     InputImage hinhanh;
     JTable tblcauhinh;
     JScrollPane scrolltblcauhinh;
@@ -137,34 +126,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         initComponents(title, type);
     }
 
-    public class DecimalDocumentFilter extends DocumentFilter {
-        @Override
-        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
-                throws BadLocationException {
-            if (isValidInput(fb.getDocument().getText(0, fb.getDocument().getLength()) + string)) {
-                super.insertString(fb, offset, string, attr);
-            }
-        }
-
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            if (isValidInput(fb.getDocument().getText(0, fb.getDocument().getLength()) + text)) {
-                super.replace(fb, offset, length, text, attrs);
-            }
-        }
-
-        @Override
-        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-            super.remove(fb, offset, length);
-        }
-
-        private boolean isValidInput(String input) {
-            // Cho phép nhập số thực (dấu chấm hoặc dấu phẩy cho phần thập phân)
-            return input.matches("\\d*([\\.,]\\d{0,2})?");
-        }
-    }
-
     // đây là phần sửa (phần updata)
     public void initCardOne(String type) {
         pnCenter = new JPanel(new BorderLayout());
@@ -188,7 +149,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         phienbanhdh = new InputForm("Phiên bản hđh");
         PlainDocument pbhdh = (PlainDocument) phienbanhdh.getTxtForm().getDocument();
         pbhdh.setDocumentFilter((new NumericDocumentFilter()));
-        thoigianbaohanh = new InputForm("Thời gian bảo hành");
+        thoigianbaohanh = new InputForm("Thời gian bảo hành (tháng)");
         PlainDocument baohanh = (PlainDocument) thoigianbaohanh.getTxtForm().getDocument();
         baohanh.setDocumentFilter((new NumericDocumentFilter()));
         camerasau = new InputForm("Camera sau");
@@ -245,33 +206,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         pnCenter.add(pnbottom, BorderLayout.SOUTH);
     }
 
-    public static Map<Integer, Double> getAveragePriceByProduct() {
-        Map<Integer, Double> priceMap = new HashMap<>();
-        String sql = "SELECT masp, AVG(gianhap) AS avg_gianhap FROM phienbansanpham GROUP BY masp";
-
-        // Kết nối với cơ sở dữ liệu
-        Connection con = JDBCUtil.getConnection();
-        if (con != null) {
-            try (PreparedStatement pstmt = con.prepareStatement(sql);
-                    ResultSet rs = pstmt.executeQuery()) {
-
-                while (rs.next()) {
-                    int masp = rs.getInt("masp");
-                    double avgGianhap = rs.getDouble("avg_gianhap");
-                    priceMap.put(masp, avgGianhap); // Lưu kết quả vào map
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                // Đóng kết nối sau khi truy vấn xong
-                JDBCUtil.closeConnection(con);
-            }
-        }
-
-        return priceMap;
-    }
-
     // hàm update phía trên
     public void initCardTwo(String type) {
         pncard2 = new JPanel(new BorderLayout());
@@ -283,150 +217,34 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         txtgianhap = new InputForm("Giá nhập tồn kho trung bình");
         PlainDocument nhap = (PlainDocument) txtgianhap.getTxtForm().getDocument();
         nhap.setDocumentFilter((new NumericDocumentFilter()));
-        // txtgianhap.setEditable(false);
-
-        // Lấy giá nhập trung bình từ cơ sở dữ liệu
-        Map<Integer, Double> averagePrices = getAveragePriceByProduct();
-        System.out.println("Mã sản phẩm truyền vào: " + masp);
-
-        // Kiểm tra xem mã sản phẩm có trong dữ liệu không
-        if (averagePrices.containsKey(masp)) {
-            double avgPrice = averagePrices.get(masp);
-            txtgianhap.getTxtForm().setText(String.valueOf(avgPrice));
-            System.out.println(); // Gán giá trị trung bình vào ô txtgianhap
-        } else {
-            txtgianhap.getTxtForm().setText("Không có dữ liệu"); // Xử lý khi không có giá trị
-        }
 
         txtgialoinhuan = new InputForm("Phần trăm lợi nhuận");
         PlainDocument loinhuan = (PlainDocument) txtgialoinhuan.getTxtForm().getDocument();
-        loinhuan.setDocumentFilter(new DecimalDocumentFilter());
-
-        // txtphantramgiamgia = new InputForm("Phần trăm giảm giá");
-        // PlainDocument giamgia = (PlainDocument)
-        // txtphantramgiamgia.getTxtForm().getDocument();
-        // giamgia.setDocumentFilter(new NumericDocumentFilter());
+        loinhuan.setDocumentFilter(new NumericDocumentFilter());
 
         txtgiaxuat = new InputForm("Giá xuất");
         PlainDocument xuat = (PlainDocument) txtgiaxuat.getTxtForm().getDocument();
-        xuat.setDocumentFilter((new DecimalDocumentFilter()));
+        xuat.setDocumentFilter((new NumericDocumentFilter()));
 
-        // txtgiaxuat.getTxtForm().setEditable(false);
-
-        // txtgialoinhuan.getTxtForm().getDocument().addDocumentListener(new
-        // DocumentListener() {
-        // @Override
-        // public void insertUpdate(DocumentEvent e) {
-        // calculateGiaXuat();
-        // }
-
-        // @Override
-        // public void removeUpdate(DocumentEvent e) {
-        // calculateGiaXuat();
-        // }
-
-        // @Override
-        // public void changedUpdate(DocumentEvent e) {
-        // calculateGiaXuat();
-        // }
-        // });
-        // txtgiaxuat.getTxtForm().getDocument().addDocumentListener(new
-        // DocumentListener() {
-        // @Override
-        // public void insertUpdate(DocumentEvent e) {
-        // calculatePhanTram();
-        // }
-
-        // @Override
-        // public void removeUpdate(DocumentEvent e) {
-        // calculatePhanTram();
-
-        // }
-
-        // @Override
-        // public void changedUpdate(DocumentEvent e) {
-        // calculatePhanTram();
-
-        // }
-        // });
+        txtgiaxuat.getTxtForm().setEditable(false);
 
         txtgialoinhuan.getTxtForm().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculateGiaXuat();
-                    isUpdating = false;
-                }
+                calculateGiaXuat();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculateGiaXuat();
-                    isUpdating = false;
-                }
+                calculateGiaXuat();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculateGiaXuat();
-                    isUpdating = false;
-                }
+                calculateGiaXuat();
             }
         });
 
-        txtgiaxuat.getTxtForm().getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculatePhanTram();
-                    isUpdating = false;
-                }
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculatePhanTram();
-                    isUpdating = false;
-                }
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                if (!isUpdating) {
-                    isUpdating = true;
-                    calculatePhanTram();
-                    isUpdating = false;
-                }
-            }
-        });
-
-        // txtphantramgiamgia.getTxtForm().getDocument().addDocumentListener(new
-        // DocumentListener() {
-
-        // @Override
-        // public void insertUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // @Override
-        // public void removeUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // @Override
-        // public void changedUpdate(DocumentEvent e) {
-        // calculateGiamGia();
-        // }
-
-        // });
         cauhinhtop.add(cbxRom);
         cauhinhtop.add(cbxRam);
         cauhinhtop.add(cbxMausac);
@@ -458,7 +276,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         scrolltblcauhinh = new JScrollPane(tblcauhinh);
         tblModelch = new DefaultTableModel();
         // đây là của table
-        String[] header = new String[] { "STT", "RAM", "ROM", "Màu sắc", "Giá nhập trung bình", "Giá xuất" };
+        String[] header = new String[] { "STT", "RAM", "ROM", "Màu sắc", "Giá nhập tồn kho trung bình", "Giá xuất." };
         tblModelch.setColumnIdentifiers(header);
         tblcauhinh.setModel(tblModelch);
         scrolltblcauhinh.setViewportView(tblcauhinh);
@@ -536,39 +354,27 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
 
     public void calculateGiaXuat() {
         try {
-            double gianhap = Double.parseDouble(txtgianhap.getTxtForm().getText());
-            double phantramloinhuan = Double.parseDouble(txtgialoinhuan.getTxtForm().getText());
-            double giaxuat = gianhap + (gianhap * phantramloinhuan / 100);
-            txtgiaxuat.getTxtForm().setText(String.format("%.2f", giaxuat));
+            int gianhap = Integer.parseInt(txtgianhap.getTxtForm().getText());
+            int phantramloinhuan = Integer.parseInt(txtgialoinhuan.getTxtForm().getText());
+            int giaxuat = gianhap + (gianhap * phantramloinhuan / 100);
+            txtgiaxuat.getTxtForm().setText(String.valueOf(giaxuat));
         } catch (Exception e) {
             txtgiaxuat.getTxtForm().setText("0");
             System.out.println("lỗi ở hàm calculateGiaXuat");
         }
     }
 
-    public void calculatePhanTram() {
+    public void calculateGiamGia() {
         try {
-            double gianhap = Double.parseDouble(txtgianhap.getTxtForm().getText());
-            double giaxuat = Double.parseDouble(txtgiaxuat.getTxtForm().getText());
-            double phantramloinhuan = ((giaxuat - gianhap) / gianhap) * 100;
-            txtgialoinhuan.getTxtForm().setText(String.format("%.2f", phantramloinhuan));
+            int gianhap = Integer.parseInt(txtgianhap.getTxtForm().getText());
+            int phantramgiamgia = Integer.parseInt(txtphantramgiamgia.getTxtForm().getText());
+            int giaxuat = gianhap - (gianhap * phantramgiamgia / 100);
+            txtgiaxuat.getTxtForm().setText(String.valueOf(giaxuat));
         } catch (Exception e) {
-            txtgialoinhuan.getTxtForm().setText("0");
-            System.out.println("lỗi ở hàm calculateGiaXuat");
+            txtgiaxuat.getTxtForm().setText("0");
+            System.out.println("Lỗi ở hàm calculateGiamGia");
         }
     }
-    // public void calculateGiamGia() {
-    // try {
-    // int gianhap = Integer.parseInt(txtgianhap.getTxtForm().getText());
-    // int phantramgiamgia =
-    // Integer.parseInt(txtphantramgiamgia.getTxtForm().getText());
-    // int giaxuat = gianhap - (gianhap * phantramgiamgia / 100);
-    // txtgiaxuat.getTxtForm().setText(String.valueOf(giaxuat));
-    // } catch (Exception e) {
-    // txtgiaxuat.getTxtForm().setText("0");
-    // System.out.println("Lỗi ở hàm calculateGiamGia");
-    // }
-    // }
 
     public void initComponents(String title, String type) {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -756,6 +562,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         int pb = Integer.parseInt(phienbanhdh.getText());
         int vthuonghieu = thuonghieuBus.getAll().get(this.thuonghieu.getSelectedIndex()).getMathuonghieu();
         int khuvuckho = kvkhoBus.getAll().get(this.khuvuc.getSelectedIndex()).getMakhuvuc();
+
         SanPhamDTO result = new SanPhamDTO(masp, vtensp, hinhanh, vxuatxu, vchipxuly, vdungluongpin, ktman, hdh, pb,
                 camsau, camtruoc, tgbh, vthuonghieu, khuvuckho, 0);
         return result;
@@ -764,17 +571,17 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     public void setInfo(SanPhamDTO sp) {
         hinhanh.setUrl_img(sp.getHinhanh());
         tenSP.setText(sp.getTensp());
-        xuatxu.setSelectedItem(sp.getXuatxu());
+        xuatxu.setSelectedIndex(xuatXuBUS.getIndexByMaXX(sp.getXuatxu()));
         chipxuly.setText(sp.getChipxuly());
         dungluongpin.setText(Integer.toString(sp.getDungluongpin()));
         kichthuocman.setText(Double.toString(sp.getKichthuocman()));
-        hedieuhanh.setSelectedItem(sp.getHedieuhanh());
+        hedieuhanh.setSelectedIndex(heDieuHanhBUS.getIndexByMaMau(sp.getHedieuhanh()));
         camerasau.setText(sp.getCamerasau());
         cameratruoc.setText(sp.getCameratruoc());
         thoigianbaohanh.setText(Integer.toString(sp.getThoigianbaohanh()));
         phienbanhdh.setText(Integer.toString(sp.getPhienbanhdh()));
         thuonghieu.setSelectedIndex(thuonghieuBus.getIndexByMaLH(sp.getThuonghieu()));
-        khuvuc.setSelectedIndex(jpSP.spBUS.getIndexByMaSP(sp.getKhuvuckho()));
+        khuvuc.setSelectedIndex(kvkhoBus.getIndexByMaKVK(sp.getKhuvuckho()));
     }
 
     public PhienBanSanPhamDTO getCauHinh() {
@@ -800,28 +607,6 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         return chsp;
     }
 
-    // hinhanh
-    // public boolean validateCardOne() {
-    // boolean check = true;
-    // if (Validation.isEmpty(tenSP.getText()) || Validation.isEmpty((String)
-    // xuatxu.getSelectedItem())
-    // || Validation.isEmpty(chipxuly.getText()) ||
-    // Validation.isEmpty(dungluongpin.getText())
-    // || Validation.isEmpty(kichthuocman.getText()) ||
-    // Validation.isEmpty(hedieuhanh.getValue())
-    // || Validation.isEmpty(camerasau.getText()) ||
-    // Validation.isEmpty(cameratruoc.getText())
-    // || Validation.isEmpty(thoigianbaohanh.getText()) ||
-    // Validation.isEmpty(phienbanhdh.getText())
-    // || Validation.isEmpty(hinhanh.getName())) {
-    // check = false;
-    // JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin cấu hình
-    // 1 !");
-    // } else {
-    // // Check number
-    // }
-    // return check;
-    // }
     public boolean validateCardOne() {
         boolean check = true;
         if (Validation.isEmpty(tenSP.getText()) || Validation.isEmpty((String) xuatxu.getSelectedItem())

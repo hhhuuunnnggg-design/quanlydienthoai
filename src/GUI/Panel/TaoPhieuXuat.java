@@ -274,6 +274,7 @@ public final class TaoPhieuXuat extends JPanel {
         labelImei.setPreferredSize(new Dimension(70, 0));
         ButtonCustom scanImei = new ButtonCustom("Quét imei", "success", 14);
         scanImei.setPreferredSize(new Dimension(110, 0));
+        scanImei.setVisible(false);
         JPanel panelScanCenter = new JPanel();
         panelScanCenter.setBackground(Color.WHITE);
         JPanel jpanelImei = new JPanel(new BorderLayout());
