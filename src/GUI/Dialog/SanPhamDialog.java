@@ -283,7 +283,7 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         txtgianhap = new InputForm("Giá nhập tồn kho trung bình");
         PlainDocument nhap = (PlainDocument) txtgianhap.getTxtForm().getDocument();
         nhap.setDocumentFilter((new NumericDocumentFilter()));
-        txtgianhap.setEditable(false);
+        // txtgianhap.setEditable(false);
 
         // Lấy giá nhập trung bình từ cơ sở dữ liệu
         Map<Integer, Double> averagePrices = getAveragePriceByProduct();
