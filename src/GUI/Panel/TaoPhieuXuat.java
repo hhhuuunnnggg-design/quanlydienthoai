@@ -650,7 +650,8 @@ public final class TaoPhieuXuat extends JPanel {
     public void loadDataTalbeSanPham(ArrayList<DTO.SanPhamDTO> result) {
         tblModelSP.setRowCount(0);
         for (DTO.SanPhamDTO sp : result) {
-            tblModelSP.addRow(new Object[] { sp.getMasp(), sp.getTensp(), sp.getSoluongton() });
+            if (sp.getSoluongton()>0)
+                tblModelSP.addRow(new Object[] { sp.getMasp(), sp.getTensp(), sp.getSoluongton() });
         }
     }
 
