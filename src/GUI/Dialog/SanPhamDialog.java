@@ -720,9 +720,9 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     }
 
     public void addRomRamMauSac_themspmoi() {
-        String romValue = (String) cbxRom.getSelectedItem(); // Lấy giá trị ROM
-        String ramValue = (String) cbxRam.getSelectedItem(); // Lấy giá trị RAM
-        String mauSacValue = (String) cbxMausac.getSelectedItem(); // Lấy giá trị Màu sắc
+        String romValue = (String) cbxRom.getSelectedItem(); // Lấy giá trị ROM (ví dụ "32GB")
+        String ramValue = (String) cbxRam.getSelectedItem(); // Lấy giá trị RAM (ví dụ "8GB")
+        String mauSacValue = (String) cbxMausac.getSelectedItem(); // Lấy giá trị Màu sắc (ví dụ "Xanh")
 
         // Kiểm tra giá trị hợp lệ trước khi thêm
         if (romValue == null || ramValue == null || mauSacValue == null) {
@@ -730,12 +730,21 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
             return;
         }
 
-        // Tạo mới đối tượng PhienBanSanPhamDTO với các thuộc tính ROM, RAM, và màu sắc
-        PhienBanSanPhamDTO newPhienBan = new PhienBanSanPhamDTO();
+        // Loại bỏ các ký tự không phải số từ chuỗi ROM và RAM
+        romValue = romValue.replaceAll("[^0-9]", ""); // Loại bỏ "GB" từ "32GB", chỉ giữ lại "32"
+        ramValue = ramValue.replaceAll("[^0-9]", ""); // Loại bỏ "GB" từ "8GB", chỉ giữ lại "8"
 
-        int rom = Integer.parseInt(romValue);
-        int ram = Integer.parseInt(ramValue);
-        int mausac = Integer.parseInt(mauSacValue); // Màu sắc đã là số nguyên
+        int rom = Integer.parseInt(romValue); // Chuyển đổi thành số nguyên
+        int ram = Integer.parseInt(ramValue); // Chuyển đổi thành số nguyên
+        int mausac = getMauSacCode(mauSacValue); // Chuyển đổi màu sắc thành mã số
+
+        // Set giá nhập và giá xuất bằng 0
+        int gianhap = 0;
+        int giaxuat = 0;
+
+        // Tạo đối tượng với các giá trị ROM, RAM, màu sắc, giá nhập và giá xuất = 0
+        PhienBanSanPhamDTO newPhienBan = new PhienBanSanPhamDTO(ram, rom, mausac, gianhap, giaxuat);
+
         // Thêm vào danh sách và cập nhật bảng cấu hình
         listch.add(newPhienBan);
         loadDataToTableCauHinh(listch); // Cập nhật lại bảng cấu hình
@@ -744,13 +753,14 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
     public void loadDataToTableCauHinh_themspmoi(ArrayList<PhienBanSanPhamDTO> listch) {
         tblModelch.setRowCount(0); // Xóa các dòng cũ
         int stt = 1;
+        System.out.println();
         for (PhienBanSanPhamDTO phienBan : listch) {
-            Object[] rowData = { stt++, phienBan.getRam(), phienBan.getRom(), phienBan.getMausac() };
+            Object[] rowData = { stt++, phienBan.getRam(), phienBan.getRom(), phienBan.getMausac(),
+                    phienBan.getGianhap(), phienBan.getGiaxuat() };
             tblModelch.addRow(rowData); // Thêm dòng mới vào bảng
         }
     }
 
-    // to
     public String addImage(String urlImg) {
         Random randomGenerator = new Random();
         int ram = randomGenerator.nextInt(1000);
@@ -775,8 +785,8 @@ public final class SanPhamDialog extends JDialog implements ActionListener {
         // }
         Object source = e.getSource();
 
-        if (source == btnThemCHMS) { // Khi nút "Thêm cấu hình" được nhấn
-            addRomRamMauSac_themspmoi(); // Gọi phương thức thêm ROM, RAM, Màu sắc
+        if (source == btnThemCHMS) {
+            addRomRamMauSac_themspmoi();
         }
 
         else if (source == btnBack) {
